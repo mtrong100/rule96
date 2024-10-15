@@ -16,6 +16,10 @@ const videoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    duration: {
+      type: Number,
+      required: true,
+    },
     categories: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -56,10 +56,12 @@ router.post("/single-video", upload.single("video"), async (req, res) => {
       folder: "rule96",
     });
 
+    console.log("reuslt upload video", result);
+
     // Delete the local file after uploading to Cloudinary
     fs.unlinkSync(req.file.path);
 
-    res.status(200).json({ url: result.secure_url });
+    res.status(200).json({ url: result.secure_url, duration: result.duration });
   } catch (error) {
     console.error("Error uploading video:", error);
     res.status(500).json({ message: "Failed to upload video" });
