@@ -1,0 +1,28 @@
+@layer tailwind-base, primereact, tailwind-utilities;
+
+/* primereact/resources/themes/soho-dark/theme.css */
+/* primereact/resources/themes/bootstrap4-dark-purple/theme.css */
+/* primereact/resources/themes/mdc-dark-deeppurple/theme.css */
+/* primereact/resources/themes/lara-dark-purple/theme.css */
+
+/* IMPORTANT: In "styled" mode you must add the PrimeReact Theme here. Do NOT include in "unstyled" mode */
+@import "primereact/resources/themes/mdc-dark-deeppurple/theme.css"
+  layer(primereact);
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+.page-container {
+  @apply mx-auto max-w-[1300px] px-5 py-10 w-full;
+}
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
