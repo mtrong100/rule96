@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const videoSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     title: {
       type: String,
       required: true,
@@ -38,6 +42,18 @@ const videoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    dislikes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected"],

@@ -37,13 +37,7 @@ const Home = () => {
     <main>
       <div className="grid grid-cols-4 gap-2">
         {videos.map((video) => (
-          <VideoCard
-            key={video._id}
-            title={video.title}
-            videoUrl={video.video}
-            views={video.views}
-            uploadDate={video.createdAt}
-          />
+          <VideoCard key={video._id} video={video} />
         ))}
       </div>
     </main>

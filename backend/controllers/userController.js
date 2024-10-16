@@ -2,6 +2,19 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import { sendOtpToEmail } from "../utils/nodemailer.js";
 import { generateOtpCode, generateTokenAndSetCookie } from "../utils/helper.js";
+import Video from "../models/videoModel.js";
+
+export const getUserVideos = async (req, res) => {
+  try {
+    const userVideo = await Video.find({ user: req.user._id });
+    return res
+      .status(200)
+      .json({ message: "Videos fetched", results: userVideo });
+  } catch (error) {
+    console.log("Error getting user videos", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 export const registerUser = async (req, res) => {
   try {

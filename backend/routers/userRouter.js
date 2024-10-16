@@ -2,6 +2,7 @@ import express from "express";
 import { protect } from "../middlewares/authMiddlware.js";
 import {
   deleteUser,
+  getUserVideos,
   loginUser,
   logoutUser,
   registerUser,
@@ -15,6 +16,8 @@ const router = express.Router();
 
 // router.get("/", protect, getUsers);
 // router.get("/:id", protect, getUserDetails);
+
+router.get("/videos", protect, getUserVideos);
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);

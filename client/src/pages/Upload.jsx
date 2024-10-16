@@ -31,11 +31,17 @@ const Upload = () => {
     categories: [],
     thumbnail: "",
     video: "",
+    duration: 0,
   });
 
   const onCreateVideo = async () => {
     if (!videoForm.title) {
       toast.error("Title is required");
+      return;
+    }
+
+    if (videoForm.title.length > 100) {
+      toast.error("Title should be less than 100 characters");
       return;
     }
 
@@ -100,7 +106,11 @@ const Upload = () => {
       );
 
       if (response) {
-        setVideoForm({ ...videoForm, video: response.data.url });
+        setVideoForm({
+          ...videoForm,
+          video: response.data.url,
+          duration: response.data.duration,
+        });
         toast.success("Video uploaded successfully");
       }
     } catch (error) {

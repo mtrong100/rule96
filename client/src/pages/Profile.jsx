@@ -8,12 +8,19 @@ import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import toast from "react-hot-toast";
-import { logoutUserApi, updateUserProfileApi } from "../apis/userApi";
+import {
+  getUserVideosApi,
+  logoutUserApi,
+  updateUserProfileApi,
+} from "../apis/userApi";
 import { userStore } from "../zustand/userStore";
 import { formatDate } from "../utils/helper";
 import { InputNumber } from "primereact/inputnumber";
 import { useNavigate } from "react-router-dom";
 import { uploadImageApi } from "../apis/uploadApi";
+import { ProgressSpinner } from "primereact/progressspinner";
+import VideoCard from "../components/VideoCard";
+import { getUserFavoritesApi } from "../apis/favoriteApi";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -171,26 +178,10 @@ const Profile = () => {
       <div className="mt-5">
         <TabView>
           <TabPanel header="Videos">
-            <p className="m-0">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci
-              velit, sed quia non numquam eius modi.
-            </p>
+            <UserVideos />
           </TabPanel>
           <TabPanel header="Favorites">
-            <p className="m-0">
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt in culpa qui officia deserunt mollitia
-              animi, id est laborum et dolorum fuga. Et harum quidem rerum
-              facilis est et expedita distinctio. Nam libero tempore, cum soluta
-              nobis est eligendi optio cumque nihil impedit quo minus.
-            </p>
+            <UserFavoriteVideos />
           </TabPanel>
         </TabView>
       </div>
@@ -338,3 +329,83 @@ const Profile = () => {
 };
 
 export default Profile;
+
+function UserVideos() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchVideos = async () => {
+    setLoading(true);
+    try {
+      const response = await getUserVideosApi();
+      if (response) setVideos(response.results);
+    } catch (error) {
+      console.log("Error fetching user videos:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center mt-10">
+        <ProgressSpinner />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3">
+      <div className="grid grid-cols-4 gap-2">
+        {videos.map((video) => (
+          <VideoCard key={video._id} video={video} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function UserFavoriteVideos() {
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchVideos = async () => {
+    setLoading(true);
+    try {
+      const response = await getUserFavoritesApi();
+      if (response) setVideos(response.results);
+    } catch (error) {
+      console.log("Error fetching user favorite videos:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center mt-10">
+        <ProgressSpinner />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3">
+      <div className="grid grid-cols-4 gap-2">
+        {videos.map((video) => (
+          <VideoCard key={video._id} video={video} />
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -10,6 +10,11 @@ export const getUserDetailsApi = async (id) => {
   return response;
 };
 
+export const getUserVideosApi = async () => {
+  const response = await axios.get(`/users/videos`);
+  return response;
+};
+
 export const registerUserApi = async (data) => {
   const response = await axios.post("/users/register", data);
   return response;
