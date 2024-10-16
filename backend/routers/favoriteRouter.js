@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", protect, getFavorites);
 
-router.get("/user", protect, getUserFavorites);
+router.get("/user/:userId", protect, getUserFavorites);
 
 router.get("/:videoId", protect, getFavoriteDetails);
 

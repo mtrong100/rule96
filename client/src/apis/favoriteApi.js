@@ -5,8 +5,8 @@ export const getFavoritesApi = async () => {
   return response;
 };
 
-export const getUserFavoritesApi = async () => {
-  const response = await axios.get(`/favorites/user`);
+export const getUserFavoritesApi = async (userId) => {
+  const response = await axios.get(`/favorites/user/${userId}`);
   return response;
 };
 

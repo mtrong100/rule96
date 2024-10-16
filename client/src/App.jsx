@@ -9,6 +9,7 @@ import Tag from "./pages/Tag";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import ResetPassword from "./pages/ResetPassword";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sign-in" element={<Signin />}></Route>
         <Route path="/sign-up" element={<Signup />}></Route>
         <Route path="/reset-password" element={<ResetPassword />}></Route>
+        <Route path="/profile/:userId" element={<UserProfile />}></Route>
       </Route>
     </Routes>
   );

@@ -1,5 +1,10 @@
 import axios from "../configs/axios";
 
+export const getUserDetails = async (id) => {
+  const response = await axios.get(`/users/${id}`);
+  return response;
+};
+
 export const getUsersApi = async (params) => {
   const response = await axios.get("/users", { params });
   return response;
@@ -10,8 +15,8 @@ export const getUserDetailsApi = async (id) => {
   return response;
 };
 
-export const getUserVideosApi = async () => {
-  const response = await axios.get(`/users/videos`);
+export const getUserVideosApi = async (userId) => {
+  const response = await axios.get(`/users/videos/${userId}`);
   return response;
 };
 
