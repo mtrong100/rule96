@@ -19,7 +19,7 @@
 }
 
 .page-container {
-  @apply mx-auto max-w-[1340px] px-5 py-10 w-full;
+  @apply mx-auto max-w-[1340px] p-5 w-full;
 }
 .layout-container {
   display: flex;
