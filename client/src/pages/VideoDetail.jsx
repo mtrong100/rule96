@@ -22,9 +22,11 @@ import {
   getCommentsFromVideoApi,
 } from "../apis/commentApi";
 import Comment from "../components/Comment";
+import { useNavigate } from "react-router-dom";
 
 const VideoDetail = () => {
   const { videoId } = useParams();
+  const navigate = useNavigate();
   const currentUser = userStore((state) => state.currentUser);
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -61,6 +63,11 @@ const VideoDetail = () => {
   };
 
   const onLikeVideo = async () => {
+    if (!currentUser) {
+      navigate("/sign-in");
+      return;
+    }
+
     try {
       const response = await likeVideoApi(videoId);
       if (response) toast.success(response.message);
@@ -73,6 +80,11 @@ const VideoDetail = () => {
   };
 
   const onDislikeVideo = async () => {
+    if (!currentUser) {
+      navigate("/sign-in");
+      return;
+    }
+
     try {
       const response = await dislikeVideoApi(videoId);
       if (response) toast.success(response.message);
@@ -85,6 +97,11 @@ const VideoDetail = () => {
   };
 
   const onToggleFavorite = async () => {
+    if (!currentUser) {
+      navigate("/sign-in");
+      return;
+    }
+
     try {
       const response = await toggleFavoriteApi(videoId);
       if (response) toast.success(response.message);
@@ -98,7 +115,10 @@ const VideoDetail = () => {
 
   useEffect(() => {
     fetchVideo();
-    fetchFavoriteVideo();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) fetchFavoriteVideo();
   }, []);
 
   if (loading) {
@@ -242,7 +262,16 @@ const VideoDetail = () => {
             </div>
           </TabPanel>
           <TabPanel header="Comments">
-            <CommentSection videoId={videoId} />
+            {!currentUser ? (
+              <Button
+                severity="warning"
+                label="Login To Comment"
+                className="mt-3 flex justify-center items-center mx-auto"
+                onClick={() => navigate("/sign-in")}
+              />
+            ) : (
+              <CommentSection videoId={videoId} />
+            )}
           </TabPanel>
         </TabView>
       </Card>
@@ -253,6 +282,7 @@ const VideoDetail = () => {
 export default VideoDetail;
 
 function CommentSection({ videoId }) {
+  const currentUser = userStore((state) => state.currentUser);
   const [value, setValue] = useState("");
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -305,7 +335,7 @@ function CommentSection({ videoId }) {
   };
 
   useEffect(() => {
-    fetchComments();
+    if (currentUser) fetchComments();
   }, []);
 
   return (

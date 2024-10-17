@@ -16,9 +16,9 @@ import {
 const router = express.Router();
 
 // router.get("/", protect, getUsers);
-router.get("/:id", protect, getUserDetails);
+router.get("/:id", getUserDetails);
 
-router.get("/videos/:userId", protect, getUserVideos);
+router.get("/videos/:userId", getUserVideos);
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);

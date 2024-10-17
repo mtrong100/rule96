@@ -46,7 +46,7 @@ const Tag = () => {
   }
 
   return (
-    <div>
+    <div className="mb-80">
       <h1 className="text-3xl font-semibold">
         Total Tags ({tags.length || 0})
       </h1>
@@ -68,6 +68,7 @@ const Tag = () => {
             <Chip
               label={`${item?.name} (${item?.totalVideos || 0})`}
               icon="pi pi-hashtag"
+              className="hover:bg-zinc-700 cursor-pointer"
             />
           </li>
         ))}
