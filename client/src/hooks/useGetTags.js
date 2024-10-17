@@ -3,7 +3,7 @@ import { getTagsApi } from "../apis/tagApi";
 import toast from "react-hot-toast";
 
 export default function useGetTags() {
-  const [tags, setTags] = useState();
+  const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchTags = async () => {

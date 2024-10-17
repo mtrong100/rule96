@@ -17,7 +17,7 @@ const Header = () => {
             <Link to="/tag">
               <Button label="Tags" icon="pi pi-tag" />
             </Link>
-            <Link to="/tag">
+            <Link to="/category">
               <Button label="Categories" icon="pi pi-objects-column" />
             </Link>
           </ul>

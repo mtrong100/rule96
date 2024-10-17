@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
+import Category from "./pages/Category";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/sign-up" element={<Signup />}></Route>
         <Route path="/reset-password" element={<ResetPassword />}></Route>
         <Route path="/profile/:userId" element={<UserProfile />}></Route>
+        <Route path="/category" element={<Category />}></Route>
       </Route>
     </Routes>
   );

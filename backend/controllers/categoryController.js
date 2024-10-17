@@ -9,7 +9,29 @@ export const getCategories = async (req, res) => {
     if (name) filter.name = name;
     if (status) filter.status = status;
 
-    const categories = await Category.find(filter);
+    const categories = await Category.aggregate([
+      { $match: filter }, // Apply any filters if present
+      {
+        $lookup: {
+          from: "videos", // Name of the collection for the videos
+          localField: "_id",
+          foreignField: "categories",
+          as: "videos",
+        },
+      },
+      {
+        $addFields: {
+          totalVideos: { $size: "$videos" }, // Add a new field for the count of videos
+        },
+      },
+      {
+        $project: {
+          videos: 0, // Exclude the actual video data from the results
+        },
+      },
+      { $sort: { createdAt: -1 } }, // Sort by creation date if needed
+    ]);
+
     return res
       .status(200)
       .json({ message: "Categories fetched", results: categories });

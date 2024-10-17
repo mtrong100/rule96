@@ -6,10 +6,32 @@ export const getTags = async (req, res) => {
 
     const filter = {};
 
-    if (name) filter.name = name;
+    if (name) filter.name = new RegExp(name, "i");
     if (status) filter.status = status;
 
-    const tags = await Tag.find(filter);
+    const tags = await Tag.aggregate([
+      { $match: filter },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "_id",
+          foreignField: "tags",
+          as: "videos",
+        },
+      },
+      {
+        $addFields: {
+          totalVideos: { $size: "$videos" },
+        },
+      },
+      {
+        $project: {
+          videos: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+    ]);
+
     return res.status(200).json({ message: "Tags fetched", results: tags });
   } catch (error) {
     console.log("Error getting tags", error.message);
@@ -19,7 +41,7 @@ export const getTags = async (req, res) => {
 
 export const createTag = async (req, res) => {
   try {
-    const { name, status } = req.body;
+    const { name } = req.body;
 
     const uniqueName = await Tag.findOne({ name });
 
@@ -29,7 +51,6 @@ export const createTag = async (req, res) => {
 
     const newTag = await Tag.create({
       name,
-      status,
     });
     return res.status(201).json({ message: "Tag created", results: newTag });
   } catch (error) {

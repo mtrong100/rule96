@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { getCategoriesApi } from "../apis/categoryApi";
 
 export default function useGetCategories() {
-  const [categories, setCategories] = useState();
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchCategories = async () => {

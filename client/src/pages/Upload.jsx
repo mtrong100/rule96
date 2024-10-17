@@ -274,6 +274,9 @@ const Upload = () => {
                   options={categories}
                   placeholder="Select your categories..."
                   optionLabel="name"
+                  filter
+                  filterPlaceholder="Search your categories..."
+                  scrollHeight="400px"
                   optionValue="_id"
                   maxSelectedLabels={3}
                   value={videoForm.categories}
@@ -299,6 +302,9 @@ const Upload = () => {
                   optionLabel="name"
                   optionValue="_id"
                   placeholder="Select your tags..."
+                  filter
+                  filterPlaceholder="Search your tags..."
+                  scrollHeight="400px"
                   maxSelectedLabels={3}
                   value={videoForm.tags}
                   onChange={(e) =>
