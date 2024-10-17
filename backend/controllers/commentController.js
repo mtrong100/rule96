@@ -2,12 +2,12 @@ import Comment from "../models/commentModel.js";
 
 export const getCommentsFromVideo = async (req, res) => {
   try {
-    const comments = await Comment.find({ video: req.params.videoId }).populate(
-      {
+    const comments = await Comment.find({ video: req.params.videoId })
+      .populate({
         path: "user",
         select: "username avatar",
-      }
-    );
+      })
+      .sort({ createdAt: -1 });
 
     return res
       .status(200)

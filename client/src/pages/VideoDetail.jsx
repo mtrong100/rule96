@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   dislikeVideoApi,
   getVideoDetailsApi,
@@ -14,6 +14,14 @@ import { formatDate, formatDuration } from "../utils/helper";
 import { Button } from "primereact/button";
 import { getFavoriteDetailsApi, toggleFavoriteApi } from "../apis/favoriteApi";
 import { userStore } from "../zustand/userStore";
+import { InputTextarea } from "primereact/inputtextarea";
+import { Divider } from "primereact/divider";
+import {
+  createCommentApi,
+  deleteCommentApi,
+  getCommentsFromVideoApi,
+} from "../apis/commentApi";
+import Comment from "../components/Comment";
 
 const VideoDetail = () => {
   const { videoId } = useParams();
@@ -192,6 +200,23 @@ const VideoDetail = () => {
                 </div>
               </div>
 
+              <div className="flex items-center gap-4">
+                Uploaded by:{" "}
+                <div className="flex items-center gap-2">
+                  <img
+                    src={video?.user?.avatar}
+                    alt=""
+                    className="w-8 h-8 object-cover rounded-full"
+                  />
+                  <Link
+                    className="hover:text-purple-300"
+                    to={`/profile/${video?.user?._id}`}
+                  >
+                    {video?.user?.username}
+                  </Link>
+                </div>
+              </div>
+
               <div>
                 Tags:{" "}
                 {video?.tags?.map((tag) => (
@@ -217,15 +242,7 @@ const VideoDetail = () => {
             </div>
           </TabPanel>
           <TabPanel header="Comments">
-            <p className="m-0">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae ab illo inventore veritatis et quasi architecto beatae vitae
-              dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-              aspernatur aut odit aut fugit, sed quia consequuntur magni dolores
-              eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci
-              velit, sed quia non numquam eius modi.
-            </p>
+            <CommentSection videoId={videoId} />
           </TabPanel>
         </TabView>
       </Card>
@@ -234,3 +251,108 @@ const VideoDetail = () => {
 };
 
 export default VideoDetail;
+
+function CommentSection({ videoId }) {
+  const [value, setValue] = useState("");
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
+  const fetchComments = async () => {
+    setLoading1(true);
+    try {
+      const response = await getCommentsFromVideoApi(videoId);
+      if (response) setComments(response.results);
+    } catch (error) {
+      console.log("Error fetching comments:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading1(false);
+    }
+  };
+
+  const onCreateComment = async () => {
+    setLoading(true);
+    try {
+      const response = await createCommentApi({
+        video: videoId,
+        content: value.trim(),
+      });
+      if (response) toast.success(response.message);
+    } catch (error) {
+      console.log("Error creating comment:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+      setValue("");
+      fetchComments();
+    }
+  };
+
+  const onDeleteComment = async (commentId) => {
+    setLoading2(true);
+    try {
+      const response = await deleteCommentApi(commentId);
+      if (response) toast.success(response.message);
+    } catch (error) {
+      console.log("Error deleting comment:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading2(false);
+      fetchComments();
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
+  return (
+    <div className="w-full">
+      <h1 className="text-3xl font-semibold mb-5">Write your comment</h1>
+      <div className="space-y-2">
+        <InputTextarea
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          rows={5}
+          cols={30}
+          className="w-full"
+          placeholder="Enter your comment..."
+        />
+        <Button
+          label="Submit"
+          className="flex ml-auto"
+          loading={loading}
+          disabled={loading}
+          onClick={onCreateComment}
+        />
+      </div>
+
+      <Divider />
+
+      <div>
+        <h1 className="text-3xl font-semibold mb-5">
+          Total Comments ({comments?.length || 0})
+        </h1>
+
+        <ul className="space-y-3">
+          {loading1 ? (
+            <div className="flex items-center justify-center h-screen">
+              <ProgressSpinner />
+            </div>
+          ) : (
+            comments?.map((comment) => (
+              <Comment
+                key={comment?._id}
+                cmt={comment}
+                onDelete={onDeleteComment}
+                loading={loading2}
+              />
+            ))
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+}

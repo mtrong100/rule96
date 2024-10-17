@@ -20,7 +20,7 @@ export const getUserVideos = async (req, res) => {
   try {
     const userVideo = await Video.find({
       user: req.params.userId || req.user._id,
-    });
+    }).sort({ createdAt: -1 });
     return res
       .status(200)
       .json({ message: "Videos fetched", results: userVideo });

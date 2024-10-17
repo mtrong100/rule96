@@ -19,9 +19,11 @@ export const getUserFavorites = async (req, res) => {
   try {
     const favorites = await Favorite.find({
       user: req.params.userId || req.user._id,
-    }).populate({
-      path: "video",
-    });
+    })
+      .populate({
+        path: "video",
+      })
+      .sort({ createdAt: -1 });
 
     const formatResults = favorites.map((favorite) => favorite.video);
 

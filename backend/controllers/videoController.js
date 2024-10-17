@@ -1,5 +1,4 @@
 import Video from "../models/videoModel.js";
-import Favorite from "../models/favoriteModel.js";
 
 export const getVideos = async (req, res) => {
   try {
@@ -13,8 +12,21 @@ export const getVideos = async (req, res) => {
     if (tag) filter.tags = { $in: [tag] };
 
     const videos = await Video.find(filter)
-      .populate("categories", "name")
-      .populate("tags", "name");
+      .populate([
+        {
+          path: "categories",
+          select: "name",
+        },
+        {
+          path: "tags",
+          select: "name",
+        },
+        {
+          path: "user",
+          select: "username avatar",
+        },
+      ])
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({ message: "Videos fetched", results: videos });
   } catch (error) {
@@ -27,9 +39,20 @@ export const getVideoDetails = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const video = await Video.findById(id)
-      .populate("categories", "name")
-      .populate("tags", "name");
+    const video = await Video.findById(id).populate([
+      {
+        path: "categories",
+        select: "name",
+      },
+      {
+        path: "tags",
+        select: "name",
+      },
+      {
+        path: "user",
+        select: "username avatar",
+      },
+    ]);
 
     const formatResults = {
       ...video._doc,

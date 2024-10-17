@@ -333,11 +333,12 @@ export default Profile;
 function UserVideos() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const currentUser = userStore((state) => state.currentUser);
 
   const fetchVideos = async () => {
     setLoading(true);
     try {
-      const response = await getUserVideosApi();
+      const response = await getUserVideosApi(currentUser?._id);
       if (response) setVideos(response.results);
     } catch (error) {
       console.log("Error fetching user videos:", error);
@@ -373,11 +374,12 @@ function UserVideos() {
 function UserFavoriteVideos() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const currentUser = userStore((state) => state.currentUser);
 
   const fetchVideos = async () => {
     setLoading(true);
     try {
-      const response = await getUserFavoritesApi();
+      const response = await getUserFavoritesApi(currentUser?._id);
       if (response) setVideos(response.results);
     } catch (error) {
       console.log("Error fetching user favorite videos:", error);
