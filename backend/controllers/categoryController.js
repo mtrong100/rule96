@@ -10,10 +10,10 @@ export const getCategories = async (req, res) => {
     if (status) filter.status = status;
 
     const categories = await Category.aggregate([
-      { $match: filter }, // Apply any filters if present
+      { $match: filter },
       {
         $lookup: {
-          from: "videos", // Name of the collection for the videos
+          from: "videos",
           localField: "_id",
           foreignField: "categories",
           as: "videos",
@@ -21,15 +21,15 @@ export const getCategories = async (req, res) => {
       },
       {
         $addFields: {
-          totalVideos: { $size: "$videos" }, // Add a new field for the count of videos
+          totalVideos: { $size: "$videos" },
         },
       },
       {
         $project: {
-          videos: 0, // Exclude the actual video data from the results
+          videos: 0,
         },
       },
-      { $sort: { createdAt: -1 } }, // Sort by creation date if needed
+      { $sort: { createdAt: -1 } },
     ]);
 
     return res

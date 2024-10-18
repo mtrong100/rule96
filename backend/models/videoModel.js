@@ -38,6 +38,11 @@ const videoSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    artist: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Artist",
+      required: true,
+    },
     totalViews: {
       type: Number,
       default: 0,
@@ -57,7 +62,7 @@ const videoSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected"],
-      default: "Pending",
+      default: "Approved",
       required: true,
     },
   },

@@ -11,6 +11,7 @@ import Signin from "./pages/Signin";
 import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
 import Category from "./pages/Category";
+import Artist from "./pages/Artist";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />}></Route>
         <Route path="/profile/:userId" element={<UserProfile />}></Route>
         <Route path="/category" element={<Category />}></Route>
+        <Route path="/artist" element={<Artist />}></Route>
       </Route>
     </Routes>
   );

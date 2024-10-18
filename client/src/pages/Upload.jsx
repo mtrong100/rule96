@@ -11,24 +11,32 @@ import toast from "react-hot-toast";
 import { createVideoApi } from "../apis/videoApi";
 import axios from "axios";
 import { createTagApi } from "../apis/tagApi";
+import { Skeleton } from "primereact/skeleton";
+import { getArtistsApi, createArtistApi } from "../apis/artistApi";
+import useGetArtist from "../hooks/useGetArtist";
+import { Dropdown } from "primereact/dropdown";
 
 const Upload = () => {
   const { tags, fetchTags } = useGetTags();
   const { categories, fetchCategories } = useGetCategories();
+  const { artists, fetchArtist } = useGetArtist();
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploading2, setUploading2] = useState(false);
   const [progress, setProgress] = useState(0);
   const [progress2, setProgress2] = useState(0);
   const [category, setCategory] = useState("");
   const [tag, setTag] = useState("");
+  const [artist, setArtist] = useState("");
   const [videoForm, setVideoForm] = useState({
     title: "",
     description: "",
     tags: [],
     categories: [],
+    artist: "",
     thumbnail: "",
     video: "",
     duration: 0,
@@ -45,13 +53,18 @@ const Upload = () => {
       return;
     }
 
-    if (tags.length === 0) {
+    if (videoForm.tags.length === 0) {
       toast.error("At least one tag is required");
       return;
     }
 
-    if (categories.length === 0) {
+    if (videoForm.categories.length === 0) {
       toast.error("At least one category is required");
+      return;
+    }
+
+    if (!videoForm.artist) {
+      toast.error("Artist is required");
       return;
     }
 
@@ -217,9 +230,28 @@ const Upload = () => {
     }
   };
 
+  const onCreateArtist = async () => {
+    if (!artist) return;
+    setLoading3(true);
+    try {
+      const response = await createArtistApi({
+        name: artist.toLowerCase().trim(),
+      });
+      if (response) toast.success(response.message);
+    } catch (error) {
+      console.log("Failed to create artist:", error);
+      toast.error(error.message);
+    } finally {
+      setLoading3(false);
+      setArtist("");
+      fetchArtist();
+    }
+  };
+
   useEffect(() => {
     fetchTags();
     fetchCategories();
+    fetchArtist();
   }, []);
 
   return (
@@ -241,24 +273,6 @@ const Upload = () => {
                     title: e.target.value,
                   }))
                 }
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="capitalize" htmlFor="description">
-                description
-              </label>
-              <InputTextarea
-                value={videoForm.description}
-                onChange={(e) =>
-                  setVideoForm((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                rows={5}
-                cols={30}
-                placeholder="Enter your description..."
               />
             </div>
 
@@ -319,6 +333,32 @@ const Upload = () => {
                   one at below
                 </p>
               </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="capitalize" htmlFor="artist">
+                  select artist
+                </label>
+                <Dropdown
+                  options={artists}
+                  optionLabel="name"
+                  optionValue="_id"
+                  placeholder="Select your artist..."
+                  filter
+                  filterPlaceholder="Search your artist..."
+                  scrollHeight="400px"
+                  value={videoForm.artist}
+                  onChange={(e) =>
+                    setVideoForm((prev) => ({
+                      ...prev,
+                      artist: e.value,
+                    }))
+                  }
+                />
+                <p className="text-gray-400">
+                  In case if you can not find your artist, just simply create
+                  new one at below
+                </p>
+              </div>
             </div>
 
             <Divider />
@@ -372,10 +412,52 @@ const Upload = () => {
                   />
                 </div>
               </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="capitalize" htmlFor="category">
+                  create new artist
+                </label>
+                <div className="flex items-center gap-2">
+                  <InputText
+                    id="artist"
+                    placeholder="Enter your new artist..."
+                    value={artist}
+                    onChange={(e) => setArtist(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    label="Create new"
+                    icon="pi pi-plus"
+                    className="h-[50px]"
+                    loading={loading3}
+                    disabled={loading3}
+                    onClick={onCreateArtist}
+                  />
+                </div>
+              </div>
             </div>
           </section>
 
           <section className="space-y-5">
+            <div className="flex flex-col gap-2">
+              <label className="capitalize" htmlFor="description">
+                description
+              </label>
+              <InputTextarea
+                value={videoForm.description}
+                onChange={(e) =>
+                  setVideoForm((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
+                rows={5}
+                cols={30}
+                placeholder="Enter your description..."
+              />
+            </div>
+
             <div className="flex flex-col gap-4">
               <label className="capitalize font-medium" htmlFor="Thumbnail">
                 Thumbnail
@@ -404,6 +486,8 @@ const Upload = () => {
                     ></div>
                   </div>
                 )}
+
+                {uploading && <Skeleton width="100%" height="300px"></Skeleton>}
 
                 {videoForm.thumbnail && !uploading && (
                   <img
@@ -443,6 +527,10 @@ const Upload = () => {
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
+                )}
+
+                {uploading2 && (
+                  <Skeleton width="100%" height="300px"></Skeleton>
                 )}
 
                 {videoForm.video && (

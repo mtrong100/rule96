@@ -13,12 +13,15 @@ const Header = () => {
         <div className="grid grid-cols-3 items-center">
           <Logo />
 
-          <ul className="flex items-center gap-5">
+          <ul className="flex items-center gap-3">
             <Link to="/tag">
               <Button label="Tags" icon="pi pi-tag" />
             </Link>
             <Link to="/category">
               <Button label="Categories" icon="pi pi-objects-column" />
+            </Link>
+            <Link to="/artist">
+              <Button label="Artists" icon="pi pi-user-edit" />
             </Link>
           </ul>
 

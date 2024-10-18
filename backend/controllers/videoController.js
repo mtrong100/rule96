@@ -2,7 +2,7 @@ import Video from "../models/videoModel.js";
 
 export const getVideos = async (req, res) => {
   try {
-    const { title, status, category, tag, dateFilter } = req.query;
+    const { title, status, category, tag, dateFilter, artist } = req.query;
 
     const filter = {};
 
@@ -10,6 +10,7 @@ export const getVideos = async (req, res) => {
     if (status) filter.status = status;
     if (category) filter.categories = { $in: [category] };
     if (tag) filter.tags = { $in: [tag] };
+    if (artist) filter.artist = artist;
 
     if (dateFilter) {
       const currentDate = new Date();
@@ -61,6 +62,10 @@ export const getVideos = async (req, res) => {
         {
           path: "user",
           select: "username avatar",
+        },
+        {
+          path: "artist",
+          select: "name image",
         },
       ])
       .sort(sortOption);

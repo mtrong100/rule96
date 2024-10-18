@@ -47,6 +47,7 @@ const VideoCard = ({ video }) => {
     >
       <div onClick={onViewCount} className="relative">
         <video
+          muted
           ref={videoRef}
           src={video?.video}
           width="100%"
