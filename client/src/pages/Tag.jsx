@@ -7,8 +7,12 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import useDebounce from "../hooks/useDebounce";
 import { getTagsApi } from "../apis/tagApi";
 import toast from "react-hot-toast";
+import { filterStore } from "../zustand/filterStore";
+import { useNavigate } from "react-router-dom";
 
 const Tag = () => {
+  const navigate = useNavigate();
+  const setFilter = filterStore((state) => state.setFilter);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -32,6 +36,12 @@ const Tag = () => {
   const filteredTags = tags.filter((tag) =>
     tag.name.toLowerCase().includes(debounceQuery.toLowerCase())
   );
+
+  const onSelectTag = (tagId) => {
+    if (!tagId) return;
+    setFilter({ tag: tagId });
+    navigate("/");
+  };
 
   useEffect(() => {
     fetchTags();
@@ -66,6 +76,7 @@ const Tag = () => {
         {filteredTags.map((item) => (
           <li key={item?._id}>
             <Chip
+              onClick={() => onSelectTag(item?._id)}
               label={`${item?.name} (${item?.totalVideos || 0})`}
               icon="pi pi-hashtag"
               className="hover:bg-zinc-700 cursor-pointer"

@@ -2,7 +2,7 @@ import Video from "../models/videoModel.js";
 
 export const getVideos = async (req, res) => {
   try {
-    const { title, status, category, tag } = req.query;
+    const { title, status, category, tag, dateFilter } = req.query;
 
     const filter = {};
 
@@ -10,6 +10,43 @@ export const getVideos = async (req, res) => {
     if (status) filter.status = status;
     if (category) filter.categories = { $in: [category] };
     if (tag) filter.tags = { $in: [tag] };
+
+    if (dateFilter) {
+      const currentDate = new Date();
+      let startDate;
+
+      switch (dateFilter) {
+        case "latest":
+          break;
+        case "oldest":
+          break;
+        case "past-24-hours":
+          startDate = new Date(currentDate.getTime() - 24 * 60 * 60 * 1000);
+          break;
+        case "past-week":
+          startDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+          break;
+        case "past-month":
+          startDate = new Date(
+            currentDate.setMonth(currentDate.getMonth() - 1)
+          );
+          break;
+        case "past-year":
+          startDate = new Date(
+            currentDate.setFullYear(currentDate.getFullYear() - 1)
+          );
+          break;
+        default:
+          break;
+      }
+
+      if (startDate) {
+        filter.createdAt = { $gte: startDate };
+      }
+    }
+
+    const sortOption =
+      dateFilter === "oldest" ? { createdAt: 1 } : { createdAt: -1 };
 
     const videos = await Video.find(filter)
       .populate([
@@ -26,7 +63,7 @@ export const getVideos = async (req, res) => {
           select: "username avatar",
         },
       ])
-      .sort({ createdAt: -1 });
+      .sort(sortOption);
 
     return res.status(200).json({ message: "Videos fetched", results: videos });
   } catch (error) {

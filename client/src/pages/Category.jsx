@@ -13,8 +13,12 @@ import { Button } from "primereact/button";
 import { formatDate } from "../utils/helper";
 import { Image } from "primereact/image";
 import noImage from "../assets/no-image.png";
+import { filterStore } from "../zustand/filterStore";
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
+  const navigate = useNavigate();
+  const setFilter = filterStore((state) => state.setFilter);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
@@ -50,6 +54,12 @@ const Category = () => {
   const handlePageChange = (pageNumber) => {
     if (pageNumber < 1 || pageNumber > totalPages) return;
     setCurrentPage(pageNumber);
+  };
+
+  const onSelectCategory = (categoryId) => {
+    if (!categoryId) return;
+    setFilter({ category: categoryId });
+    navigate("/");
   };
 
   // const createdAtTemplate = (rowData) => {
@@ -128,7 +138,11 @@ const Category = () => {
 
       <ul className="grid grid-cols-5 gap-2 mt-5">
         {currentCategories.map((item) => (
-          <Card key={item?._id}>
+          <Card
+            onClick={() => onSelectCategory(item?._id)}
+            key={item?._id}
+            className="hover:bg-zinc-800 cursor-pointer"
+          >
             <img
               src={item?.image || noImage}
               alt=""
