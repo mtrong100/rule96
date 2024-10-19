@@ -122,6 +122,7 @@ export const createVideo = async (req, res) => {
       video,
       duration,
       artist,
+      user,
     } = req.body;
 
     const newVideo = await Video.create({
@@ -133,6 +134,7 @@ export const createVideo = async (req, res) => {
       video,
       duration,
       artist,
+      user,
     });
 
     return res

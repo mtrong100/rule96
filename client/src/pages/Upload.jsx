@@ -122,11 +122,11 @@ const Upload = () => {
       );
 
       if (response) {
-        setVideoForm({
-          ...videoForm,
-          video: response.data.url,
-          duration: response.data.duration,
-        });
+        setVideoForm((prev) => ({
+          ...prev,
+          video: response?.data?.url,
+          duration: response?.data?.duration,
+        }));
         toast.success("Video uploaded successfully");
       }
     } catch (error) {
@@ -544,7 +544,7 @@ const Upload = () => {
                     muted
                     src={videoForm.video}
                     controls
-                    className="w-full h-[300px] object-cover mt-4"
+                    className="w-full h-[300px] object-contain mt-4"
                   />
                 )}
               </div>

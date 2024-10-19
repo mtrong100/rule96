@@ -52,7 +52,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="mb-40">
+    <main>
       <Card>
         <div className="flex items-center justify-between  mb-5 ">
           <h1 className="text-3xl font-semibold capitalize">

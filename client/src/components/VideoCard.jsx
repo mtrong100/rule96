@@ -41,7 +41,7 @@ const VideoCard = ({ video }) => {
 
   return (
     <div
-      className="shadow-sm rounded-lg bg-[#1e1e1e]"
+      className="shadow-sm rounded-lg bg-[#1e1e1e] border border-zinc-700 hover:bg-zinc-800 cursor-pointer transition-all"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
