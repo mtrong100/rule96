@@ -142,10 +142,9 @@ const VideoDetail = () => {
       <video
         poster={video?.thumbnail}
         src={video?.video}
-        width="100%"
-        height="100%"
         controls
         autoPlay={false}
+        className="w-full h-[670px] object-contain"
       />
 
       <Card className="mt-2">

@@ -41,7 +41,7 @@ const VideoCard = ({ video }) => {
 
   return (
     <div
-      className="shadow-sm rounded-lg h-[315px] flex flex-col overflow-hidden "
+      className="shadow-sm rounded-lg bg-[#1e1e1e]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -50,9 +50,9 @@ const VideoCard = ({ video }) => {
           muted
           ref={videoRef}
           src={video?.video}
-          width="100%"
-          height="100%"
-          className="flex-1 object-cover rounded-tl-lg rounded-tr-lg"
+          className={`${
+            isHovered ? "object-contain" : "object-cover"
+          } rounded-tl-lg rounded-tr-lg h-[217px] w-full`}
           controls={false}
         />
         {!isHovered && (
@@ -61,8 +61,9 @@ const VideoCard = ({ video }) => {
           </div>
         )}
       </div>
-      <div className="p-4 bg-[#1e1e1e]">
-        <h3 className="font-semibold mb-3">{video?.title}</h3>
+
+      <div className="p-4">
+        <h3 className="font-semibold mb-3 line-clamp-1">{video?.title}</h3>
         <div className="flex justify-between text-sm text-gray-500">
           <div className="flex items-center gap-2">
             <i className="pi pi-eye"></i>

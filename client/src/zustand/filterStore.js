@@ -6,8 +6,11 @@ export const filterStore = create((set) => ({
     category: "",
     tag: "",
     dateFilter: "",
+    artist: "",
   },
   setFilter: (filter) => set({ filter }),
   clearFilter: () =>
-    set({ filter: { title: "", category: "", tag: "", dateFilter: "" } }),
+    set({
+      filter: { title: "", category: "", tag: "", dateFilter: "", artist: "" },
+    }),
 }));

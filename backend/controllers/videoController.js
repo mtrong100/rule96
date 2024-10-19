@@ -113,7 +113,16 @@ export const getVideoDetails = async (req, res) => {
 
 export const createVideo = async (req, res) => {
   try {
-    const { title, description, thumbnail, categories, tags, video } = req.body;
+    const {
+      title,
+      description,
+      thumbnail,
+      categories,
+      tags,
+      video,
+      duration,
+      artist,
+    } = req.body;
 
     const newVideo = await Video.create({
       title,
@@ -122,6 +131,8 @@ export const createVideo = async (req, res) => {
       categories,
       tags,
       video,
+      duration,
+      artist,
     });
 
     return res

@@ -14,6 +14,8 @@ import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import { DATE_FILTERS } from "../utils/constants";
 import { filterStore } from "../zustand/filterStore";
+import useGetArtist from "../hooks/useGetArtist";
+import Empty from "../components/Empty";
 
 const Home = () => {
   const filter = filterStore((state) => state.filter);
@@ -22,6 +24,7 @@ const Home = () => {
   const [videos, setVideos] = useState([]);
   const { tags, fetchTags } = useGetTags();
   const { categories, fetchCategories } = useGetCategories();
+  const { artists, fetchArtist } = useGetArtist();
   const [loading, setLoading] = useState(false);
   const debounceQuery = useDebounce(filter.title, 500);
 
@@ -45,21 +48,34 @@ const Home = () => {
   useEffect(() => {
     fetchCategories();
     fetchTags();
+    fetchArtist();
   }, []);
 
   return (
-    <main>
+    <main className="mb-40">
       <Card>
-        <h1 className="text-3xl font-semibold mb-5 capitalize">
-          Browse more Videos By Filter
-        </h1>
-        <div className="grid grid-cols-5 gap-2">
+        <div className="flex items-center justify-between  mb-5 ">
+          <h1 className="text-3xl font-semibold capitalize">
+            Browse more Videos By Filter
+          </h1>
           <Button
             onClick={clearFilter}
             label="Clear Filter"
             icon="pi pi-filter-slash"
           />
-
+        </div>
+        <div className="grid grid-cols-5 gap-2">
+          <Dropdown
+            options={artists}
+            optionLabel="name"
+            optionValue="_id"
+            placeholder="Select your artist..."
+            filter
+            filterPlaceholder="Search your artist..."
+            scrollHeight="400px"
+            value={filter.artist}
+            onChange={(e) => setFilter({ ...filter, artist: e.value })}
+          />
           <Dropdown
             value={filter.category}
             onChange={(e) => setFilter({ ...filter, category: e.value })}
@@ -88,7 +104,7 @@ const Home = () => {
             options={DATE_FILTERS}
             optionLabel="label"
             optionValue="value"
-            placeholder="Select date filter"
+            placeholder="Select timestamp"
             scrollHeight="300px"
           />
           <IconField iconPosition="left">
@@ -105,11 +121,7 @@ const Home = () => {
 
       <Divider />
 
-      {videos.length === 0 && (
-        <h1 className="text-3xl text-center font-semibold my-56 capitalize">
-          No videos found
-        </h1>
-      )}
+      {videos.length === 0 && <Empty />}
 
       <div className="grid grid-cols-4 gap-2 ">
         {videos.map((video) => (

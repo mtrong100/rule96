@@ -12,11 +12,14 @@ import { createVideoApi } from "../apis/videoApi";
 import axios from "axios";
 import { createTagApi } from "../apis/tagApi";
 import { Skeleton } from "primereact/skeleton";
-import { getArtistsApi, createArtistApi } from "../apis/artistApi";
+import { createArtistApi } from "../apis/artistApi";
 import useGetArtist from "../hooks/useGetArtist";
 import { Dropdown } from "primereact/dropdown";
+import { generateRandomText } from "../utils/helper";
+import { userStore } from "../zustand/userStore";
 
 const Upload = () => {
+  const currentUser = userStore((state) => state.currentUser);
   const { tags, fetchTags } = useGetTags();
   const { categories, fetchCategories } = useGetCategories();
   const { artists, fetchArtist } = useGetArtist();
@@ -43,11 +46,6 @@ const Upload = () => {
   });
 
   const onCreateVideo = async () => {
-    if (!videoForm.title) {
-      toast.error("Title is required");
-      return;
-    }
-
     if (videoForm.title.length > 100) {
       toast.error("Title should be less than 100 characters");
       return;
@@ -70,8 +68,13 @@ const Upload = () => {
 
     setLoading(true);
     try {
-      console.log(videoForm);
-      const response = await createVideoApi({ ...videoForm });
+      const randomString = generateRandomText(30);
+
+      const response = await createVideoApi({
+        ...videoForm,
+        title: videoForm.title || randomString,
+        user: currentUser?._id,
+      });
       if (response) toast.success(response.message);
     } catch (error) {
       console.log("Failed to create video:", error);
@@ -184,14 +187,17 @@ const Upload = () => {
   };
 
   const onDiscard = () => {
-    setVideoForm({
-      title: "",
-      description: "",
-      tags: [],
-      categories: [],
-      thumbnail: "",
-      video: "",
-    });
+    // setVideoForm({
+    //   title: "",
+    //   description: "",
+    //   tags: [],
+    //   categories: [],
+    //   artist: "",
+    //   thumbnail: "",
+    //   video: "",
+    //   duration: 0,
+    // });
+    window.location.reload();
   };
 
   const onCreateCategory = async () => {
@@ -535,6 +541,7 @@ const Upload = () => {
 
                 {videoForm.video && (
                   <video
+                    muted
                     src={videoForm.video}
                     controls
                     className="w-full h-[300px] object-cover mt-4"

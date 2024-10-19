@@ -56,8 +56,6 @@ router.post("/single-video", upload.single("video"), async (req, res) => {
       folder: "rule96",
     });
 
-    console.log("reuslt upload video", result);
-
     // Delete the local file after uploading to Cloudinary
     fs.unlinkSync(req.file.path);
 
