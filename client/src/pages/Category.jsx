@@ -7,11 +7,7 @@ import useDebounce from "../hooks/useDebounce";
 import toast from "react-hot-toast";
 import { getCategoriesApi } from "../apis/categoryApi";
 import { Card } from "primereact/card";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { formatDate } from "../utils/helper";
-import { Image } from "primereact/image";
 import noImage from "../assets/no-image.png";
 import { filterStore } from "../zustand/filterStore";
 import { useNavigate } from "react-router-dom";
@@ -62,14 +58,6 @@ const Category = () => {
     navigate("/");
   };
 
-  // const createdAtTemplate = (rowData) => {
-  //   return <div>{formatDate(rowData.createdAt)}</div>;
-  // };
-
-  // const imageTemplate = (rowData) => {
-  //   return <Image src={rowData.image || noImage} alt="Image" width="100" />;
-  // };
-
   useEffect(() => {
     setCurrentPage(1);
   }, [debounceQuery]);
@@ -91,38 +79,6 @@ const Category = () => {
       <h1 className="text-3xl font-semibold">
         Total Categories ({categories.length || 0})
       </h1>
-
-      {/* <DataTable
-        value={filteredCategories}
-        paginator
-        rows={15}
-        paginatorLeft
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        scrollable
-        stripedRows
-        showGridlines
-        className="mt-5"
-        header={
-          <div className="p-inputgroup max-w-md flex ml-auto">
-            <InputText
-              placeholder="Search your categories..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <Button icon="pi pi-search" />
-          </div>
-        }
-      >
-        <Column field="image" header="Image" body={imageTemplate} />
-        <Column field="name" header="Category" sortable />
-        <Column field="totalVideos" header="Total Videos" sortable />
-        <Column
-          field="createdAt"
-          header="Date added"
-          sortable
-          body={createdAtTemplate}
-        />
-      </DataTable> */}
 
       <div className="mt-5">
         <IconField iconPosition="left">

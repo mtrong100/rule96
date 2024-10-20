@@ -27,6 +27,8 @@ const Home = () => {
   const { artists, fetchArtist } = useGetArtist();
   const [loading, setLoading] = useState(false);
   const debounceQuery = useDebounce(filter.title, 500);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
 
   const fetchVideos = async () => {
     setLoading(true);
@@ -41,9 +43,23 @@ const Home = () => {
     }
   };
 
+  const totalPages = Math.ceil(videos.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentVideos = videos.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+  };
+
   useEffect(() => {
     fetchVideos();
   }, [filter, debounceQuery]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debounceQuery]);
 
   useEffect(() => {
     fetchCategories();
@@ -52,7 +68,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="mb-40">
+    <main>
       <Card>
         <div className="flex items-center justify-between  mb-5 ">
           <h1 className="text-3xl font-semibold capitalize">
@@ -124,9 +140,36 @@ const Home = () => {
       {videos.length === 0 && <Empty />}
 
       <div className="grid grid-cols-4 gap-2 ">
-        {videos.map((video) => (
+        {currentVideos.map((video) => (
           <VideoCard key={video._id} video={video} />
         ))}
+      </div>
+
+      <div className="flex justify-center mt-7 gap-2">
+        <Button
+          label="Previous"
+          icon="pi pi-chevron-left"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        />
+        <div>
+          {[...Array(totalPages)].map((_, index) => (
+            <Button
+              key={index + 1}
+              label={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={`${
+                currentPage === index + 1 ? "bg-zinc-700 " : "bg-zinc-800"
+              } text-white`}
+            />
+          ))}
+        </div>
+        <Button
+          label="Next"
+          icon="pi pi-chevron-right"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        />
       </div>
     </main>
   );

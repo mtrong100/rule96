@@ -9,3 +9,13 @@ export const createCategoryApi = async (data) => {
   const response = await axios.post("/categories/create", data);
   return response;
 };
+
+export const updateCategoryApi = async (id, data) => {
+  const response = await axios.put(`/categories/update/${id}`, data);
+  return response;
+};
+
+export const deleteCategoryApi = async (id) => {
+  const response = await axios.delete(`/categories/delete/${id}`);
+  return response;
+};

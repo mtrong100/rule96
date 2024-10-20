@@ -242,7 +242,7 @@ const VideoDetail = () => {
                   <Tag
                     key={tag?._id}
                     value={tag?.name}
-                    className="capitalize"
+                    className="capitalize ml-2"
                   />
                 ))}
               </div>
@@ -252,7 +252,7 @@ const VideoDetail = () => {
                   <Tag
                     key={cat?._id}
                     value={cat?.name}
-                    className="capitalize"
+                    className="capitalize ml-2"
                   />
                 ))}
               </div>

@@ -12,6 +12,15 @@ import ResetPassword from "./pages/ResetPassword";
 import UserProfile from "./pages/UserProfile";
 import Category from "./pages/Category";
 import Artist from "./pages/Artist";
+import DashboardLayout from "./components/DashboardLayout";
+import Admin from "./admin/Admin";
+import Dashboard from "./admin/Dashboard";
+import CommentManage from "./admin/CommentManage";
+import UserManage from "./admin/UserManage";
+import VideoManage from "./admin/VideoManage";
+import CategoryManage from "./admin/CategoryManage";
+import TagManage from "./admin/TagManage";
+import ArtistManage from "./admin/ArtistManage";
 
 function App() {
   return (
@@ -29,6 +38,20 @@ function App() {
         <Route path="/profile/:userId" element={<UserProfile />}></Route>
         <Route path="/category" element={<Category />}></Route>
         <Route path="/artist" element={<Artist />}></Route>
+      </Route>
+
+      <Route element={<DashboardLayout />}>
+        <Route path="/admin" element={<Admin />}></Route>
+        <Route path="/admin/dashboard" element={<Dashboard />}></Route>
+        <Route
+          path="/admin/category-manage"
+          element={<CategoryManage />}
+        ></Route>
+        <Route path="/admin/video-manage" element={<VideoManage />}></Route>
+        <Route path="/admin/tag-manage" element={<TagManage />}></Route>
+        <Route path="/admin/user-manage" element={<UserManage />}></Route>
+        <Route path="/admin/artist-manage" element={<ArtistManage />}></Route>
+        <Route path="/admin/comment-manage" element={<CommentManage />}></Route>
       </Route>
     </Routes>
   );
