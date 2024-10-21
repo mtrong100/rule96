@@ -220,3 +220,46 @@ export const dislikeVideo = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, categories, tags, artist } = req.body;
+
+    const video = await Video.findById(id);
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    video.title = title;
+    video.description = description;
+    video.categories = categories;
+    video.tags = tags;
+    video.artist = artist;
+
+    await video.save();
+
+    return res.status(200).json({ message: "Video updated successfully" });
+  } catch (error) {
+    console.log("Error updating video", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const video = await Video.findByIdAndDelete(id);
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    return res.status(200).json({ message: "Video deleted successfully" });
+  } catch (error) {
+    console.log("Error deleting video", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};

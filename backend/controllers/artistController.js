@@ -62,3 +62,44 @@ export const createArtist = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateArtist = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, image, status } = req.body;
+
+    const artist = await Artist.findById(id);
+
+    if (!artist) {
+      return res.status(404).json({ message: "Artist not found" });
+    }
+
+    const updatedArtist = await Artist.findByIdAndUpdate(
+      id,
+      { name, image, status },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Artist updated", results: updatedArtist });
+  } catch (error) {
+    console.log("Error updating artist", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteArtist = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const artist = await Artist.findByIdAndDelete(id);
+
+    if (!artist) {
+      return res.status(404).json({ message: "Artist not found" });
+    }
+
+    res.status(200).json({ message: "Artist deleted" });
+  } catch (error) {
+    console.log("Error deleting artist", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};

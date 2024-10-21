@@ -11,12 +11,14 @@ import {
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import { formatDate } from "../utils/helper";
-import { Image } from "primereact/image";
-import noImage from "../assets/no-image.png";
 import Swal from "sweetalert2";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
+import {
+  createdAtTemplate,
+  imageTemplate,
+  statusTemplate,
+} from "../utils/template";
 
 const CategoryManage = () => {
   const [visible, setVisible] = useState(false);
@@ -38,7 +40,7 @@ const CategoryManage = () => {
   const fetchCategories = async () => {
     setLoading(true);
     try {
-      const response = await getCategoriesApi({ status: "Active" });
+      const response = await getCategoriesApi();
       if (response) setCategories(response.results);
     } catch (error) {
       console.log("Failed to fetch categories:", error);
@@ -73,9 +75,9 @@ const CategoryManage = () => {
     if (!form2.name) return;
     try {
       const response = await updateCategoryApi(details._id, {
-        id: details.id,
         name: form2.name.toLowerCase().trim(),
         image: form2.image,
+        status: form2.status,
       });
       if (response) toast.success(response.message);
     } catch (error) {
@@ -109,20 +111,6 @@ const CategoryManage = () => {
         }
       }
     });
-  };
-
-  const createdAtTemplate = (rowData) => {
-    return <div>{formatDate(rowData.createdAt)}</div>;
-  };
-
-  const imageTemplate = (rowData) => {
-    return (
-      <img
-        src={rowData.image || noImage}
-        alt="Image"
-        className="object-contain w-full h-[80px] rounded-lg"
-      />
-    );
   };
 
   const actionTemplate = (rowData) => {
@@ -210,6 +198,7 @@ const CategoryManage = () => {
         <Column field="image" header="Image" body={imageTemplate} />
         <Column field="name" header="Category" sortable />
         <Column field="totalVideos" header="Total Videos" sortable />
+        <Column field="status" header="Status" body={statusTemplate} sortable />
         <Column
           field="createdAt"
           header="Date added"

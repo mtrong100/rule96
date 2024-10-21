@@ -58,3 +58,43 @@ export const createTag = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const updateTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, status } = req.body;
+
+    const tag = await Tag.findById(id);
+
+    if (!tag) {
+      return res.status(404).json({ message: "Tag not found" });
+    }
+
+    tag.name = name;
+    tag.status = status;
+
+    await tag.save();
+
+    return res.status(200).json({ message: "Tag updated", results: tag });
+  } catch (error) {
+    console.log("Error updating tag", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteTag = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const tag = await Tag.findByIdAndDelete(id);
+
+    if (!tag) {
+      return res.status(404).json({ message: "Tag not found" });
+    }
+
+    return res.status(200).json({ message: "Tag deleted" });
+  } catch (error) {
+    console.log("Error deleting tag", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};

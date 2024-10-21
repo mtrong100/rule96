@@ -29,3 +29,13 @@ export const dislikeVideoApi = async (id) => {
   const response = await axios.put(`/videos/dislike/${id}`);
   return response;
 };
+
+export const updateVideoApi = async (id, data) => {
+  const response = await axios.put(`/videos/update/${id}`, data);
+  return response;
+};
+
+export const deleteVideoApi = async (id) => {
+  const response = await axios.delete(`/videos/delete/${id}`);
+  return response;
+};
