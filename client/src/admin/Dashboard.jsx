@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import useGetStats from "../hooks/useGetStats";
 import CardCount from "../components/CardCount";
 import { Skeleton } from "primereact/skeleton";
+import VideoChart from "../components/VideoChart";
+import OtherChart from "../components/OtherChart";
 
 const Dashboard = () => {
   const {
@@ -62,6 +64,25 @@ const Dashboard = () => {
           </>
         )}
       </ul>
+
+      <div className="mt-5 space-y-5">
+        <VideoChart
+          loading={loading2}
+          dataSet={videoStats?.videoCount}
+          labels={videoStats?.months}
+        />
+        <OtherChart
+          loading={loading2}
+          numbers={[
+            countStats?.videoCount,
+            countStats?.userCount,
+            countStats?.commentCount,
+            countStats?.artistCount,
+            countStats?.categoryCount,
+            countStats?.tagCount,
+          ]}
+        />
+      </div>
     </div>
   );
 };
