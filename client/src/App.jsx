@@ -13,7 +13,6 @@ import UserProfile from "./pages/UserProfile";
 import Category from "./pages/Category";
 import Artist from "./pages/Artist";
 import DashboardLayout from "./components/DashboardLayout";
-import Admin from "./admin/Admin";
 import Dashboard from "./admin/Dashboard";
 import CommentManage from "./admin/CommentManage";
 import UserManage from "./admin/UserManage";
@@ -41,7 +40,6 @@ function App() {
       </Route>
 
       <Route element={<DashboardLayout />}>
-        <Route path="/admin" element={<Admin />}></Route>
         <Route path="/admin/dashboard" element={<Dashboard />}></Route>
         <Route
           path="/admin/category-manage"
