@@ -16,19 +16,20 @@ import { DATE_FILTERS } from "../utils/constants";
 import { filterStore } from "../zustand/filterStore";
 import useGetArtist from "../hooks/useGetArtist";
 import Empty from "../components/Empty";
+import { Skeleton } from "primereact/skeleton";
 
 const Home = () => {
   const filter = filterStore((state) => state.filter);
   const setFilter = filterStore((state) => state.setFilter);
   const clearFilter = filterStore((state) => state.clearFilter);
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { tags, fetchTags } = useGetTags();
   const { categories, fetchCategories } = useGetCategories();
   const { artists, fetchArtist } = useGetArtist();
-  const [loading, setLoading] = useState(false);
   const debounceQuery = useDebounce(filter.title, 500);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 50;
+  const itemsPerPage = 40;
 
   const fetchVideos = async () => {
     setLoading(true);
@@ -140,9 +141,17 @@ const Home = () => {
       {videos.length === 0 && <Empty />}
 
       <div className="grid grid-cols-4 gap-2 ">
-        {currentVideos.map((video) => (
-          <VideoCard key={video._id} video={video} />
-        ))}
+        {loading &&
+          Array(itemsPerPage)
+            .fill(0)
+            .map((item, index) => (
+              <Skeleton key={index} height="307px"></Skeleton>
+            ))}
+
+        {!loading &&
+          currentVideos.map((video) => (
+            <VideoCard key={video._id} video={video} />
+          ))}
       </div>
 
       <div className="flex justify-center mt-7 gap-2">

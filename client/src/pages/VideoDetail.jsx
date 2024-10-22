@@ -23,6 +23,9 @@ import {
 } from "../apis/commentApi";
 import Comment from "../components/Comment";
 import { useNavigate } from "react-router-dom";
+import useGetVideos from "../hooks/useGetVideos";
+import { Skeleton } from "primereact/skeleton";
+import VideoCard from "../components/VideoCard";
 
 const VideoDetail = () => {
   const { videoId } = useParams();
@@ -31,6 +34,9 @@ const VideoDetail = () => {
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [favoriteVideo, setFavoriteVideo] = useState(null);
+  const { fetchVideos, videos, pending } = useGetVideos();
+
+  const filteredVideos = videos.filter((item) => item._id !== videoId);
 
   const fetchVideo = async () => {
     setLoading(true);
@@ -115,6 +121,7 @@ const VideoDetail = () => {
 
   useEffect(() => {
     fetchVideo();
+    fetchVideos();
   }, []);
 
   useEffect(() => {
@@ -274,6 +281,23 @@ const VideoDetail = () => {
           </TabPanel>
         </TabView>
       </Card>
+
+      <section className="mt-8">
+        <h1 className="text-4xl font-bold capitalize">Recommended for you</h1>
+        <div className="grid grid-cols-4 gap-2 mt-6">
+          {pending &&
+            Array(8)
+              .fill(0)
+              .map((item, index) => (
+                <Skeleton key={index} height="307px"></Skeleton>
+              ))}
+
+          {!pending &&
+            filteredVideos
+              .slice(0, 8)
+              .map((video) => <VideoCard key={video._id} video={video} />)}
+        </div>
+      </section>
     </div>
   );
 };
