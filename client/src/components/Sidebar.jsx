@@ -4,9 +4,28 @@ import { Link, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import { SIDEBAR_LINKS } from "../utils/constants";
 import { Card } from "primereact/card";
+import { logoutUserApi } from "../apis/userApi";
+import { userStore } from "../zustand/userStore";
+import toast from "react-hot-toast";
+import { Button } from "primereact/button";
 
 const Sidebar = () => {
   const location = useLocation();
+  const setCurrentUser = userStore((state) => state.setCurrentUser);
+
+  const onLogout = async () => {
+    try {
+      const response = await logoutUserApi();
+      if (response) {
+        setCurrentUser(null);
+        toast.success(response.message);
+        window.location.href = "/sign-in";
+      }
+    } catch (error) {
+      console.log("Error logging out user", error);
+      toast.error(error.message);
+    }
+  };
 
   return (
     <Card className="w-[300px] overflow-y-auto sticky top-0 left-0  border-right h-screen p-3 shadow-sm flex-shrink-0  z-10">
@@ -35,10 +54,13 @@ const Sidebar = () => {
         })}
       </ul>
       <Divider />
-      <div className="flex cursor-pointer items-center gap-3 px-5 rounded-md h-[45px] hover:bg-white/10 font-medium">
-        <i className="pi pi-sign-out"></i>
-        <span>Logout</span>
-      </div>
+      <Button
+        label="Logout"
+        icon="pi pi-sign-out"
+        severity="danger"
+        className="w-full"
+        onClick={onLogout}
+      />
     </Card>
   );
 };

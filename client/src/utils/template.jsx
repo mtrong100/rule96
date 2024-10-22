@@ -79,3 +79,41 @@ export const status2Template = (rowData) => {
 
   return <Tag value={rowData.status} severity={severity} />;
 };
+
+export const avatarTemplate = (rowData) => {
+  return (
+    <img src={rowData.avatar} alt="Avatar" className="w-10 h-10 rounded-full" />
+  );
+};
+
+export const roleTemplate = (rowData) => {
+  return (
+    <Tag
+      value={rowData.role}
+      severity={`${rowData.role === "User" ? "info" : "warning"}`}
+    />
+  );
+};
+
+export const userCmtTemplate = (rowData) => {
+  return (
+    <div className="flex items-center gap-3">
+      <img
+        src={rowData.user.avatar}
+        alt="Avatar"
+        className="w-10 h-10 rounded-full"
+      />
+      <h1>{rowData.user.username}</h1>
+    </div>
+  );
+};
+
+export const videoCmtTemplate = (rowData) => {
+  return (
+    <video
+      src={rowData.video.video}
+      muted
+      className="object-contain w-[80px] h-[80px] rounded-lg"
+    />
+  );
+};

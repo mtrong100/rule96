@@ -1,5 +1,26 @@
 import Comment from "../models/commentModel.js";
 
+export const getComments = async (req, res) => {
+  try {
+    const comments = await Comment.find().populate([
+      {
+        path: "user",
+        select: "username avatar",
+      },
+      {
+        path: "video",
+        select: "title video",
+      },
+    ]);
+    return res
+      .status(200)
+      .json({ message: "Comments fetched", results: comments });
+  } catch (error) {
+    console.log("Error getting comments", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const getCommentsFromVideo = async (req, res) => {
   try {
     const comments = await Comment.find({ video: req.params.videoId })

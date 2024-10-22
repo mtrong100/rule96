@@ -7,6 +7,7 @@ import videoRouter from "./videoRouter.js";
 import favoriteRouter from "./favoriteRouter.js";
 import commentRouter from "./commentRouter.js";
 import artistRouter from "./artistRouter.js";
+import statsRouter from "./statsRouter.js";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use("/videos", videoRouter);
 router.use("/favorites", favoriteRouter);
 router.use("/comments", commentRouter);
 router.use("/artists", artistRouter);
+router.use("/stats", statsRouter);
 
 export default router;

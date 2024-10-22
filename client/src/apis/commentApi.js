@@ -1,5 +1,10 @@
 import axios from "../configs/axios";
 
+export const getCommentsApi = async () => {
+  const response = await axios.get("/comments");
+  return response;
+};
+
 export const getCommentsFromVideoApi = async (videoId) => {
   const response = await axios.get(`/comments/${videoId}`);
   return response;

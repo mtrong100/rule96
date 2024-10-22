@@ -1,8 +1,9 @@
 import express from "express";
-import { protect } from "../middlewares/authMiddlware.js";
+import { protect, adminProtect } from "../middlewares/authMiddlware.js";
 import {
   deleteUser,
   getUserDetails,
+  getUsers,
   getUserVideos,
   loginUser,
   logoutUser,
@@ -15,7 +16,7 @@ import {
 
 const router = express.Router();
 
-// router.get("/", protect, getUsers);
+router.get("/", adminProtect, getUsers);
 router.get("/:id", getUserDetails);
 
 router.get("/videos/:userId", getUserVideos);

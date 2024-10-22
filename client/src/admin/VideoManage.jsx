@@ -9,15 +9,28 @@ import Swal from "sweetalert2";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import {
-  categoriesTemplate,
   createdAtTemplate,
   status2Template,
-  tagsTemplate,
   videoTemplate,
 } from "../utils/template";
-import { deleteVideoApi, getVideosApi } from "../apis/videoApi";
+import {
+  deleteVideoApi,
+  getVideosApi,
+  increaseViewCountApi,
+  updateVideoApi,
+} from "../apis/videoApi";
+import { useNavigate } from "react-router-dom";
+import { MultiSelect } from "primereact/multiselect";
+import { InputTextarea } from "primereact/inputtextarea";
+import useGetTags from "../hooks/useGetTags";
+import useGetCategories from "../hooks/useGetCategories";
+import useGetArtist from "../hooks/useGetArtist";
 
 const VideoManage = () => {
+  const navigate = useNavigate();
+  const { tags, fetchTags } = useGetTags();
+  const { categories, fetchCategories } = useGetCategories();
+  const { artists, fetchArtist } = useGetArtist();
   const [visible, setVisible] = useState(false);
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -49,23 +62,40 @@ const VideoManage = () => {
     item.title.toLowerCase().includes(debounceQuery.toLowerCase())
   );
 
-  // const onUpdate = async () => {
-  //   if (!form2.name) return;
-  //   try {
-  //     const response = await updateCategoryApi(details._id, {
-  //       name: form2.name.toLowerCase().trim(),
-  //       image: form2.image,
-  //       status: form2.status,
-  //     });
-  //     if (response) toast.success(response.message);
-  //   } catch (error) {
-  //     console.log("Failed to update category:", error);
-  //     toast.error(error.message);
-  //   } finally {
-  //     fetchCategories();
-  //     setVisible(false);
-  //   }
-  // };
+  const onUpdate = async () => {
+    if (videoForm.title.length > 100) {
+      toast.error("Title should be less than 100 characters");
+      return;
+    }
+
+    if (videoForm.tags.length === 0) {
+      toast.error("At least one tag is required");
+      return;
+    }
+
+    if (videoForm.categories.length === 0) {
+      toast.error("At least one category is required");
+      return;
+    }
+
+    if (!videoForm.artist) {
+      toast.error("Artist is required");
+      return;
+    }
+
+    try {
+      const response = await updateVideoApi(details._id, {
+        ...videoForm,
+      });
+      if (response) toast.success(response.message);
+    } catch (error) {
+      console.log("Failed to update video:", error);
+      toast.error(error.message);
+    } finally {
+      fetchVideos();
+      setVisible(false);
+    }
+  };
 
   const onDelete = async (itemId) => {
     Swal.fire({
@@ -91,9 +121,24 @@ const VideoManage = () => {
     });
   };
 
+  const onViewCount = async (videoId) => {
+    try {
+      const response = await increaseViewCountApi(videoId);
+      if (response) navigate(`/video/${videoId}`);
+    } catch (error) {
+      console.log("Error viewing video:", error);
+      toast.error(error.message);
+    }
+  };
+
   const actionTemplate = (rowData) => {
     return (
       <div className="flex items-center gap-2">
+        <Button
+          severity="info"
+          icon="pi pi-eye"
+          onClick={() => onViewCount(rowData._id)}
+        />
         <Button
           severity="warning"
           icon="pi pi-pencil"
@@ -125,6 +170,21 @@ const VideoManage = () => {
   };
 
   useEffect(() => {
+    if (details) {
+      setVideoForm({
+        title: details.title,
+        description: details.description,
+        tags: details.tags,
+        categories: details.categories,
+        artist: details.artist._id,
+      });
+    }
+  }, [details]);
+
+  useEffect(() => {
+    fetchTags();
+    fetchCategories();
+    fetchArtist();
     fetchVideos();
   }, []);
 
@@ -163,6 +223,131 @@ const VideoManage = () => {
         />
         <Column body={actionTemplate} exportable={false} header="Action" />
       </DataTable>
+
+      <Dialog
+        header="Update category"
+        visible={visible}
+        style={{ width: "30vw" }}
+        onHide={() => {
+          if (!visible) return;
+          setVisible(false);
+        }}
+      >
+        <div className="space-y-3">
+          <div className="flex flex-col gap-2">
+            <label className="capitalize" htmlFor="title">
+              title
+            </label>
+            <InputText
+              id="title"
+              placeholder="Enter your title..."
+              value={videoForm.title}
+              onChange={(e) =>
+                setVideoForm((prev) => ({
+                  ...prev,
+                  title: e.target.value,
+                }))
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="capitalize" htmlFor="categories">
+              select categories (limit 3)
+            </label>
+            <MultiSelect
+              options={categories}
+              placeholder="Select your categories..."
+              optionLabel="name"
+              optionValue="_id"
+              filter
+              filterPlaceholder="Search your categories..."
+              scrollHeight="400px"
+              maxSelectedLabels={3}
+              value={videoForm.categories}
+              onChange={(e) =>
+                setVideoForm((prev) => ({
+                  ...prev,
+                  categories: e.value,
+                }))
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="capitalize" htmlFor="tags">
+              select tags (limit 5)
+            </label>
+            <MultiSelect
+              options={tags}
+              optionLabel="name"
+              optionValue="_id"
+              placeholder="Select your tags..."
+              filter
+              filterPlaceholder="Search your tags..."
+              scrollHeight="400px"
+              maxSelectedLabels={3}
+              value={videoForm.tags}
+              onChange={(e) =>
+                setVideoForm((prev) => ({
+                  ...prev,
+                  tags: e.value,
+                }))
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="capitalize" htmlFor="artist">
+              select artist
+            </label>
+            <Dropdown
+              options={artists}
+              optionLabel="name"
+              optionValue="_id"
+              placeholder="Select your artist..."
+              filter
+              filterPlaceholder="Search your artist..."
+              scrollHeight="400px"
+              value={videoForm.artist}
+              onChange={(e) =>
+                setVideoForm((prev) => ({
+                  ...prev,
+                  artist: e.value,
+                }))
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="capitalize" htmlFor="description">
+              description
+            </label>
+            <InputTextarea
+              value={videoForm.description}
+              onChange={(e) =>
+                setVideoForm((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+              rows={5}
+              cols={30}
+              placeholder="Enter your description..."
+            />
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button
+              label="Close"
+              severity="danger"
+              icon="pi pi-times"
+              onClick={() => setVisible(false)}
+            />
+            <Button label="Save" icon="pi pi-save" onClick={onUpdate} />
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };

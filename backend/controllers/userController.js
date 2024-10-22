@@ -4,6 +4,18 @@ import { sendOtpToEmail } from "../utils/nodemailer.js";
 import { generateOtpCode, generateTokenAndSetCookie } from "../utils/helper.js";
 import Video from "../models/videoModel.js";
 
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select(
+      "-password -resetPasswordOtp -resetPasswordExpires"
+    );
+    return res.status(200).json({ message: "Users fetched", results: users });
+  } catch (error) {
+    console.log("Error getting users", error.message);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const getUserDetails = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select(
