@@ -16,6 +16,16 @@ export const imageTemplate = (rowData) => {
   );
 };
 
+export const image2Template = (rowData) => {
+  return (
+    <img
+      src={rowData.image}
+      alt="Avatar"
+      className="w-12 h-12 rounded-full object-cover"
+    />
+  );
+};
+
 export const statusTemplate = (rowData) => {
   return (
     <Tag

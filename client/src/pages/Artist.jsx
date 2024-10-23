@@ -9,6 +9,7 @@ import { filterStore } from "../zustand/filterStore";
 import { useNavigate } from "react-router-dom";
 import useGetArtist from "../hooks/useGetArtist";
 import noImage from "../assets/no-image.png";
+import Empty from "../components/Empty";
 
 const Artist = () => {
   const navigate = useNavigate();
@@ -55,6 +56,10 @@ const Artist = () => {
           />
         </IconField>
       </div>
+
+      {!loading && filteredArtists.length === 0 && (
+        <Empty text="No artist found" />
+      )}
 
       <ul className="flex flex-wrap gap-2 mt-5">
         {filteredArtists.map((item) => (

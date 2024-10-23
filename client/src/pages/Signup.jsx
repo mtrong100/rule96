@@ -65,7 +65,7 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className="mt-10 mb-20">
       <form
         onSubmit={handleSubmit(onRegister)}
         className="w-full max-w-xl mx-auto"

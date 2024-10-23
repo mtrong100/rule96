@@ -10,7 +10,7 @@ import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import {
   createdAtTemplate,
-  imageTemplate,
+  image2Template,
   statusTemplate,
 } from "../utils/template";
 import {
@@ -195,7 +195,7 @@ const ArtistManage = () => {
         header={headerTemplate}
       >
         <Column field="_id" header="ID" sortable />
-        <Column field="image" header="Image" body={imageTemplate} />
+        <Column field="image" header="Image" body={image2Template} />
         <Column field="name" header="Artist" sortable />
         <Column field="status" header="Status" body={statusTemplate} sortable />
         <Column

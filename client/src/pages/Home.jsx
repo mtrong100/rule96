@@ -138,7 +138,7 @@ const Home = () => {
 
       <Divider />
 
-      {videos.length === 0 && <Empty />}
+      {!loading && currentVideos.length === 0 && <Empty />}
 
       <div className="grid grid-cols-4 gap-2 ">
         {loading &&

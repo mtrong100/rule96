@@ -9,6 +9,7 @@ import { getTagsApi } from "../apis/tagApi";
 import toast from "react-hot-toast";
 import { filterStore } from "../zustand/filterStore";
 import { useNavigate } from "react-router-dom";
+import Empty from "../components/Empty";
 
 const Tag = () => {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Tag = () => {
   }
 
   return (
-    <div className="mb-80">
+    <div>
       <h1 className="text-3xl font-semibold">
         Total Tags ({tags.length || 0})
       </h1>
@@ -71,6 +72,8 @@ const Tag = () => {
           />
         </IconField>
       </div>
+
+      {!loading && filteredTags.length === 0 && <Empty text="No tag found" />}
 
       <ul className="flex flex-wrap gap-2 mt-5">
         {filteredTags.map((item) => (

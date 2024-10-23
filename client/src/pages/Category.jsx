@@ -11,6 +11,8 @@ import { Button } from "primereact/button";
 import noImage from "../assets/no-image.png";
 import { filterStore } from "../zustand/filterStore";
 import { useNavigate } from "react-router-dom";
+import { Skeleton } from "primereact/skeleton";
+import Empty from "../components/Empty";
 
 const Category = () => {
   const navigate = useNavigate();
@@ -66,14 +68,6 @@ const Category = () => {
     fetchCategories();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <ProgressSpinner />
-      </div>
-    );
-  }
-
   return (
     <div>
       <h1 className="text-3xl font-semibold">
@@ -92,23 +86,35 @@ const Category = () => {
         </IconField>
       </div>
 
+      {!loading && currentCategories.length === 0 && (
+        <Empty text="No categories found" />
+      )}
+
       <ul className="grid grid-cols-5 gap-2 mt-5">
-        {currentCategories.map((item) => (
-          <Card
-            onClick={() => onSelectCategory(item?._id)}
-            key={item?._id}
-            className="hover:bg-zinc-800 cursor-pointer"
-          >
-            <img
-              src={item?.image || noImage}
-              alt=""
-              className="w-full h-[160px] object-cover rounded-md"
-            />
-            <h1 className="mt-3 capitalize">{`${item?.name} (${
-              item?.totalVideos || 0
-            })`}</h1>
-          </Card>
-        ))}
+        {loading &&
+          Array(itemsPerPage)
+            .fill(0)
+            .map((item, index) => (
+              <Skeleton key={index} height="268px"></Skeleton>
+            ))}
+
+        {!loading &&
+          currentCategories.map((item) => (
+            <Card
+              onClick={() => onSelectCategory(item?._id)}
+              key={item?._id}
+              className="hover:bg-zinc-800 cursor-pointer"
+            >
+              <img
+                src={item?.image || noImage}
+                alt=""
+                className="w-full h-[160px] object-cover rounded-md"
+              />
+              <h1 className="mt-3 capitalize">{`${item?.name} (${
+                item?.totalVideos || 0
+              })`}</h1>
+            </Card>
+          ))}
       </ul>
 
       <div className="flex justify-center mt-7 gap-2">

@@ -21,6 +21,7 @@ import { uploadImageApi } from "../apis/uploadApi";
 import { ProgressSpinner } from "primereact/progressspinner";
 import VideoCard from "../components/VideoCard";
 import { getUserFavoritesApi } from "../apis/favoriteApi";
+import { Skeleton } from "primereact/skeleton";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -352,20 +353,18 @@ function UserVideos() {
     fetchVideos();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center mt-10">
-        <ProgressSpinner />
-      </div>
-    );
-  }
-
   return (
     <div className="mt-3">
       <div className="grid grid-cols-4 gap-2">
-        {videos.map((video) => (
-          <VideoCard key={video._id} video={video} />
-        ))}
+        {loading &&
+          Array(20)
+            .fill(0)
+            .map((item, index) => (
+              <Skeleton key={index} height="307px"></Skeleton>
+            ))}
+
+        {!loading &&
+          videos.map((video) => <VideoCard key={video._id} video={video} />)}
       </div>
     </div>
   );
@@ -393,20 +392,18 @@ function UserFavoriteVideos() {
     fetchVideos();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center mt-10">
-        <ProgressSpinner />
-      </div>
-    );
-  }
-
   return (
     <div className="mt-3">
       <div className="grid grid-cols-4 gap-2">
-        {videos.map((video) => (
-          <VideoCard key={video._id} video={video} />
-        ))}
+        {loading &&
+          Array(20)
+            .fill(0)
+            .map((item, index) => (
+              <Skeleton key={index} height="307px"></Skeleton>
+            ))}
+
+        {!loading &&
+          videos.map((video) => <VideoCard key={video._id} video={video} />)}
       </div>
     </div>
   );
