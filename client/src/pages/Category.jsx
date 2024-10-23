@@ -60,6 +60,11 @@ const Category = () => {
     navigate("/");
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [debounceQuery]);
@@ -70,7 +75,7 @@ const Category = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold">
+      <h1 className="text-xl md:text-3xl font-semibold">
         Total Categories ({categories.length || 0})
       </h1>
 
@@ -90,7 +95,7 @@ const Category = () => {
         <Empty text="No categories found" />
       )}
 
-      <ul className="grid grid-cols-5 gap-2 mt-5">
+      <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mt-5">
         {loading &&
           Array(itemsPerPage)
             .fill(0)
@@ -110,9 +115,9 @@ const Category = () => {
                 alt=""
                 className="w-full h-[160px] object-cover rounded-md"
               />
-              <h1 className="mt-3 capitalize">{`${item?.name} (${
-                item?.totalVideos || 0
-              })`}</h1>
+              <h1 className="mt-3 capitalize text-sm lg:text-base">{`${
+                item?.name
+              } (${item?.totalVideos || 0})`}</h1>
             </Card>
           ))}
       </ul>

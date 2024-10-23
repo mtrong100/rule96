@@ -5,10 +5,10 @@ import Logo from "./Logo";
 const Footer = () => {
   return (
     <Card>
-      <div className="text-center py-5">
+      <div className="text-center md:py-5">
         <Logo />
 
-        <p className="my-3">
+        <p className="my-3 text-sm  md:text-base">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
           odio dignissimos aliquid sunt ipsum. <br /> Mollitia rerum non numquam
           blanditiis, corporis ipsa quibusdam,

@@ -22,6 +22,7 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import VideoCard from "../components/VideoCard";
 import { getUserFavoritesApi } from "../apis/favoriteApi";
 import { Skeleton } from "primereact/skeleton";
+import Empty from "../components/Empty";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -102,6 +103,11 @@ const Profile = () => {
     }
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     if (currentUser) {
       setForm({
@@ -120,22 +126,24 @@ const Profile = () => {
   return (
     <div>
       <Card>
-        <div className="grid grid-cols-2 items-start place-items-center gap-12">
+        <div className="grid md:grid-cols-2 items-start place-items-center gap-12">
           <div className="space-y-5 w-full">
             <div className="flex justify-center gap-5 flex-col items-center ">
               <img
                 src={currentUser?.avatar}
-                className="rounded-full w-[200px] h-[200px] object-cover"
+                className="rounded-full w-[130px] h-[130px] lg:w-[200px] lg:h-[200px] object-cover"
               />
             </div>
 
             <Divider />
 
-            <div>About me: {currentUser?.about}</div>
+            <div className="lg:text-base text-sm">
+              About me: {currentUser?.about}
+            </div>
           </div>
 
-          <div className="w-full flex flex-col h-full">
-            <ul className="grid grid-cols-2 items-start flex-1">
+          <div className="w-full flex flex-col h-full lg:text-base text-sm space-y-5">
+            <ul className="grid grid-cols-2 items-start flex-1 gap-5">
               <div className="space-y-1">
                 <li>Username: {currentUser?.username}</li>
                 <li>Email: {currentUser?.email}</li>
@@ -150,14 +158,39 @@ const Profile = () => {
               </div>
             </ul>
 
-            <div className="flex items-center justify-between">
+            <div className="md:hidden space-y-2">
               <Button
                 label="Logout"
                 icon="pi pi-sign-out"
                 severity="danger"
                 onClick={onLogout}
+                className="w-full"
               />
-              <div className="flex items-center gap-3">
+              <Button
+                label="Reset Password"
+                icon="pi pi-shield"
+                severity="contrast"
+                onClick={() => navigate("/reset-password")}
+                className="w-full"
+              />
+              <Button
+                label="Update Profile"
+                icon="pi pi-user-edit"
+                severity="secondary"
+                onClick={() => setVisible(true)}
+                className="w-full"
+              />
+            </div>
+
+            <div className="hidden md:flex lg:flex-row flex-col-reverse gap-3 items-center justify-between">
+              <Button
+                label="Logout"
+                icon="pi pi-sign-out"
+                severity="danger"
+                onClick={onLogout}
+                className="lg:w-fit w-full"
+              />
+              <div className="flex items-center gap-3 ">
                 <Button
                   label="Reset Password"
                   icon="pi pi-shield"
@@ -190,7 +223,7 @@ const Profile = () => {
       <Dialog
         header="Update Profile"
         visible={visible}
-        style={{ width: "30vw" }}
+        className="w-[400px] md:w-[600px]"
         onHide={() => {
           if (!visible) return;
           setVisible(false);
@@ -200,7 +233,7 @@ const Profile = () => {
           <div className="flex justify-center gap-5 flex-col items-center ">
             <img
               src={form?.avatar}
-              className="rounded-full w-[200px] h-[200px] object-cover"
+              className="rounded-full w-[100px] h-[100px] md:w-[200px] md:h-[200px] object-cover"
             />
             {uploading ? (
               <p className="text-center">Uploading....</p>
@@ -209,6 +242,7 @@ const Profile = () => {
                 type="file"
                 accept="image/*"
                 onChange={handleUploadImage}
+                className="text-center flex mx-auto"
               />
             )}
           </div>
@@ -355,12 +389,12 @@ function UserVideos() {
 
   return (
     <div className="mt-3">
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2 ">
         {loading &&
           Array(20)
             .fill(0)
             .map((item, index) => (
-              <Skeleton key={index} height="307px"></Skeleton>
+              <Skeleton key={index} height="300px"></Skeleton>
             ))}
 
         {!loading &&
@@ -394,12 +428,14 @@ function UserFavoriteVideos() {
 
   return (
     <div className="mt-3">
-      <div className="grid grid-cols-4 gap-2">
+      {!loading && videos.length === 0 && <Empty />}
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2 ">
         {loading &&
           Array(20)
             .fill(0)
             .map((item, index) => (
-              <Skeleton key={index} height="307px"></Skeleton>
+              <Skeleton key={index} height="300px"></Skeleton>
             ))}
 
         {!loading &&

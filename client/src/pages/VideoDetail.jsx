@@ -119,6 +119,11 @@ const VideoDetail = () => {
     }
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     fetchVideo();
     fetchVideos();
@@ -137,25 +142,78 @@ const VideoDetail = () => {
   }
   return (
     <div>
-      <div className="flex items-center gap-5 mb-5">
+      <div className="flex flex-row items-center gap-5 mb-5 ">
         <Button
           onClick={() => window.history.back()}
           label="Back"
           icon="pi pi-arrow-left"
         />
-        <h1 className="text-3xl font-semibold">{video?.title}</h1>
+        <div className="text-3xl flex-1 font-semibold hidden md:block">
+          {video?.title}
+        </div>
       </div>
 
+      <h1 className="text-xl font-semibold mb-2 md:hidden">{video?.title}</h1>
       <video
         poster={video?.thumbnail}
         src={video?.video}
         controls
         autoPlay={false}
-        className="w-full h-[670px] object-contain"
+        className="w-full h-[350px] md:h-[670px] object-contain"
       />
 
-      <Card className="mt-2">
-        <div className="flex items-center gap-3 justify-between">
+      {/* For mobile */}
+      <Card className="mt-2 md:hidden">
+        <div className="grid grid-cols-2 gap-2">
+          <Button
+            icon={`pi ${
+              video?.likes?.includes(currentUser?._id)
+                ? "pi-thumbs-up-fill"
+                : "pi-thumbs-up"
+            }`}
+            label={`Like (${video?.totalLikes})`}
+            severity="secondary"
+            onClick={onLikeVideo}
+          />
+          <Button
+            icon={`pi ${
+              video?.dislikes?.includes(currentUser?._id)
+                ? "pi-thumbs-down-fill"
+                : "pi-thumbs-down"
+            }`}
+            label={`Dislike (${video?.totalDislikes})`}
+            severity="secondary"
+            onClick={onDislikeVideo}
+          />
+          <Button
+            icon={`pi ${
+              favoriteVideo?.video === videoId ? "pi-heart-fill" : "pi-heart"
+            }`}
+            label={`${
+              favoriteVideo?.video === videoId
+                ? "Remove From Favorites"
+                : "Add To Favorites"
+            } `}
+            severity="contrast"
+            onClick={onToggleFavorite}
+          />
+          <Button
+            onClick={onReport}
+            icon="pi pi-flag"
+            label="Report"
+            severity="danger"
+          />
+          <Button
+            onClick={onCopyLink}
+            icon="pi pi-share-alt"
+            label="Share"
+            severity="info"
+          />
+        </div>
+      </Card>
+
+      <Card className="mt-2 hidden md:block">
+        <div className="flex items-center gap-3 justify-between ">
           <div className="flex items-center gap-3">
             <Button
               icon={`pi ${
@@ -243,23 +301,23 @@ const VideoDetail = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="flex items-center gap-2 flex-wrap">
                 Tags:{" "}
                 {video?.tags?.map((tag) => (
                   <Tag
                     key={tag?._id}
                     value={tag?.name}
-                    className="capitalize ml-2"
+                    className="capitalize"
                   />
                 ))}
               </div>
-              <div>
+              <div className="flex items-center gap-2 flex-wrap">
                 Categories:{" "}
                 {video?.categories?.map((cat) => (
                   <Tag
                     key={cat?._id}
                     value={cat?.name}
-                    className="capitalize ml-2"
+                    className="capitalize"
                   />
                 ))}
               </div>
@@ -282,9 +340,11 @@ const VideoDetail = () => {
         </TabView>
       </Card>
 
-      <section className="mt-8">
-        <h1 className="text-4xl font-bold capitalize">Recommended for you</h1>
-        <div className="grid grid-cols-4 gap-2 mt-6">
+      <section className="mt-5 space-y-5">
+        <h1 className="text-2xl md:text-4xl font-bold capitalize">
+          Recommended for you
+        </h1>
+        <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2 ">
           {pending &&
             Array(8)
               .fill(0)
@@ -363,7 +423,9 @@ function CommentSection({ videoId }) {
 
   return (
     <div className="w-full">
-      <h1 className="text-3xl font-semibold mb-5">Write your comment</h1>
+      <h1 className="text-xl md:text-3xl font-semibold mb-5">
+        Write your comment
+      </h1>
       <div className="space-y-2">
         <InputTextarea
           value={value}
@@ -385,7 +447,7 @@ function CommentSection({ videoId }) {
       <Divider />
 
       <div>
-        <h1 className="text-3xl font-semibold mb-5">
+        <h1 className="text-xl md:text-3xl font-semibold mb-5">
           Total Comments ({comments?.length || 0})
         </h1>
 

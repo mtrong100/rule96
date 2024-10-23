@@ -28,6 +28,11 @@ const Artist = () => {
     navigate("/");
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     fetchArtist();
   }, []);
@@ -41,8 +46,8 @@ const Artist = () => {
   }
 
   return (
-    <div className="mb-80">
-      <h1 className="text-3xl font-semibold">
+    <div>
+      <h1 className="text-xl md:text-3xl font-semibold">
         Total Artists ({artists.length || 0})
       </h1>
       <div className="mt-5">
@@ -61,7 +66,7 @@ const Artist = () => {
         <Empty text="No artist found" />
       )}
 
-      <ul className="flex flex-wrap gap-2 mt-5">
+      <ul className="grid grid-cols-2 items-center md:flex md:flex-wrap gap-2 mt-5">
         {filteredArtists.map((item) => (
           <li key={item?._id}>
             <Chip

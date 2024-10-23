@@ -52,7 +52,7 @@ const VideoCard = ({ video }) => {
           src={video?.video}
           className={`${
             isHovered ? "object-contain" : "object-cover"
-          } rounded-tl-lg rounded-tr-lg h-[217px] w-full`}
+          } rounded-tl-lg rounded-tr-lg h-[150px] md:h-[217px] w-full`}
           controls={false}
         />
         {!isHovered && (
@@ -63,13 +63,17 @@ const VideoCard = ({ video }) => {
       </div>
 
       <div className="p-4">
-        <h3 className="font-semibold mb-3 line-clamp-1">{video?.title}</h3>
+        <h3 className="font-semibold mb-3 line-clamp-1 text-sm md:text-base">
+          {video?.title}
+        </h3>
         <div className="flex justify-between text-sm text-gray-500">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-xs md:text-base">
             <i className="pi pi-eye"></i>
             {video?.totalViews || 0} Views
           </div>
-          <span>{formatDate(video?.createdAt)}</span>
+          <span className="text-xs md:text-base">
+            {formatDate(video?.createdAt)}
+          </span>
         </div>
       </div>
     </div>

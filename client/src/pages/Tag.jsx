@@ -44,6 +44,11 @@ const Tag = () => {
     navigate("/");
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     fetchTags();
   }, []);
@@ -58,7 +63,7 @@ const Tag = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold">
+      <h1 className="text-xl md:text-3xl font-semibold">
         Total Tags ({tags.length || 0})
       </h1>
       <div className="mt-5">
@@ -75,14 +80,14 @@ const Tag = () => {
 
       {!loading && filteredTags.length === 0 && <Empty text="No tag found" />}
 
-      <ul className="flex flex-wrap gap-2 mt-5">
+      <ul className="grid grid-cols-2 items-center md:flex md:flex-wrap gap-2 mt-5">
         {filteredTags.map((item) => (
           <li key={item?._id}>
             <Chip
               onClick={() => onSelectTag(item?._id)}
               label={`${item?.name} (${item?.totalVideos || 0})`}
               icon="pi pi-hashtag"
-              className="hover:bg-zinc-700 cursor-pointer"
+              className="hover:bg-zinc-700 cursor-pointer text-xs md:text-base"
             />
           </li>
         ))}

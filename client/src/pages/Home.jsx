@@ -54,6 +54,11 @@ const Home = () => {
     setCurrentPage(pageNumber);
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     fetchVideos();
   }, [filter, debounceQuery]);
@@ -71,17 +76,18 @@ const Home = () => {
   return (
     <main>
       <Card>
-        <div className="flex items-center justify-between  mb-5 ">
-          <h1 className="text-3xl font-semibold capitalize">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-5 gap-3">
+          <h1 className="text-2xl md:text-3xl font-semibold capitalize">
             Browse more Videos By Filter
           </h1>
           <Button
             onClick={clearFilter}
             label="Clear Filter"
             icon="pi pi-filter-slash"
+            className="w-full md:w-fit"
           />
         </div>
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
           <Dropdown
             options={artists}
             optionLabel="name"
@@ -140,12 +146,12 @@ const Home = () => {
 
       {!loading && currentVideos.length === 0 && <Empty />}
 
-      <div className="grid grid-cols-4 gap-2 ">
+      <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2 ">
         {loading &&
           Array(itemsPerPage)
             .fill(0)
             .map((item, index) => (
-              <Skeleton key={index} height="307px"></Skeleton>
+              <Skeleton key={index} height="300px"></Skeleton>
             ))}
 
         {!loading &&

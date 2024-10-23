@@ -254,6 +254,11 @@ const Upload = () => {
     }
   };
 
+  // FIX SCROLL BUG
+  useEffect(() => {
+    document.body.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   useEffect(() => {
     fetchTags();
     fetchCategories();
@@ -261,9 +266,9 @@ const Upload = () => {
   }, []);
 
   return (
-    <div className="">
+    <div>
       <form>
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid lg:grid-cols-2 gap-10">
           <section className="space-y-5">
             <div className="flex flex-col gap-2">
               <label className="capitalize" htmlFor="title">
