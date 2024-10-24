@@ -29,7 +29,7 @@ const Home = () => {
   const { artists, fetchArtist } = useGetArtist();
   const debounceQuery = useDebounce(filter.title, 500);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 40;
+  const itemsPerPage = 36;
 
   const fetchVideos = async () => {
     setLoading(true);

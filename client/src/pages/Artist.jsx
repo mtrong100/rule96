@@ -46,11 +46,12 @@ const Artist = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-xl md:text-3xl font-semibold">
+    <section>
+      <h1 className="text-2xl md:text-3xl font-bold">
         Total Artists ({artists.length || 0})
       </h1>
-      <div className="mt-5">
+
+      <div className="mt-3 md:mt-5">
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
@@ -62,11 +63,9 @@ const Artist = () => {
         </IconField>
       </div>
 
-      {!loading && filteredArtists.length === 0 && (
-        <Empty text="No artist found" />
-      )}
+      {!loading && filteredArtists.length === 0 && <Empty />}
 
-      <ul className="items-center flex flex-wrap gap-2 my-5">
+      <ul className="items-center flex flex-wrap gap-2 mt-5">
         {filteredArtists.map((item) => (
           <li key={item?._id}>
             <Chip
@@ -78,7 +77,7 @@ const Artist = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

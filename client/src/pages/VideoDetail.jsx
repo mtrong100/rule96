@@ -151,10 +151,10 @@ const VideoDetail = () => {
           label="Back"
           icon="pi pi-arrow-left"
         />
-        <div className="text-3xl flex-1 font-semibold">{video?.title}</div>
+        <div className="text-3xl flex-1 font-bold">{video?.title}</div>
       </div>
 
-      <h1 className="text-lg font-semibold mb-3 md:hidden">{video?.title}</h1>
+      <h1 className="text-lg font-bold mb-3 md:hidden">{video?.title}</h1>
 
       <video
         poster={video?.thumbnail}
@@ -350,7 +350,7 @@ const VideoDetail = () => {
 
       <Divider />
 
-      <section className="space-y-5">
+      <section className="space-y-5 mb-5">
         <h1 className="text-2xl md:text-4xl font-bold capitalize">
           Recommended for you
         </h1>

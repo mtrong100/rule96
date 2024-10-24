@@ -62,11 +62,12 @@ const Tag = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-xl md:text-3xl font-semibold">
+    <section>
+      <h1 className="text-2xl md:text-3xl font-bold">
         Total Tags ({tags.length || 0})
       </h1>
-      <div className="mt-5">
+
+      <div className="mt-3 md:mt-5">
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
@@ -78,9 +79,9 @@ const Tag = () => {
         </IconField>
       </div>
 
-      {!loading && filteredTags.length === 0 && <Empty text="No tag found" />}
+      {!loading && filteredTags.length === 0 && <Empty />}
 
-      <ul className="items-center flex flex-wrap gap-2 my-5">
+      <ul className="items-center flex flex-wrap gap-2 mt-5">
         {filteredTags.map((item) => (
           <li key={item?._id}>
             <Chip
@@ -92,7 +93,7 @@ const Tag = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 };
 

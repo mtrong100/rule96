@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { InputText } from "primereact/inputtext";
-import { ProgressSpinner } from "primereact/progressspinner";
 import useDebounce from "../hooks/useDebounce";
 import toast from "react-hot-toast";
 import { getCategoriesApi } from "../apis/categoryApi";
@@ -22,7 +21,7 @@ const Category = () => {
   const [query, setQuery] = useState("");
   const debounceQuery = useDebounce(query, 500);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 30;
+  const itemsPerPage = 40;
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -74,12 +73,12 @@ const Category = () => {
   }, []);
 
   return (
-    <div>
-      <h1 className="text-xl md:text-3xl font-semibold">
+    <section>
+      <h1 className="text-2xl md:text-3xl font-bold">
         Total Categories ({categories.length || 0})
       </h1>
 
-      <div className="mt-5">
+      <div className="mt-3 md:mt-5">
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
@@ -91,9 +90,7 @@ const Category = () => {
         </IconField>
       </div>
 
-      {!loading && currentCategories.length === 0 && (
-        <Empty text="No categories found" />
-      )}
+      {!loading && currentCategories.length === 0 && <Empty />}
 
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mt-5">
         {loading &&
@@ -148,7 +145,7 @@ const Category = () => {
           disabled={currentPage === totalPages}
         />
       </div>
-    </div>
+    </section>
   );
 };
 

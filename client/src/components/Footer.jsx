@@ -1,10 +1,9 @@
 import { Card } from "primereact/card";
-import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
 const Footer = () => {
   return (
-    <Card>
+    <Card className="mt-auto">
       <div className="text-center md:py-5">
         <Logo />
 
