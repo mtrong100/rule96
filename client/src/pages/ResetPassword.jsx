@@ -77,7 +77,7 @@ const ResetPassword = () => {
   }, []);
 
   return (
-    <div className="my-10">
+    <div className="mt-10">
       <form
         onSubmit={handleSubmit(handleResetPassword)}
         className="w-full max-w-xl mx-auto"

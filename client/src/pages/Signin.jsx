@@ -62,12 +62,12 @@ const Signin = () => {
   }, []);
 
   return (
-    <div className="mt-32 mb-40">
+    <section className="mt-32">
       <form
         onSubmit={handleSubmit(onLogin)}
         className="w-full max-w-xl mx-auto"
       >
-        <h1 className="text-5xl text-center font-semibold mb-5">Login</h1>
+        <h1 className="text-5xl text-center font-bold mb-5">Login</h1>
         <div className="space-y-5">
           <FieldInput
             label="Email"
@@ -115,7 +115,7 @@ const Signin = () => {
           </Link>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 

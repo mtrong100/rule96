@@ -70,12 +70,12 @@ const Signup = () => {
   }, []);
 
   return (
-    <div className="mt-10 mb-20">
+    <section className="mt-10">
       <form
         onSubmit={handleSubmit(onRegister)}
         className="w-full max-w-xl mx-auto"
       >
-        <h1 className="text-3xl md:text-5xl text-center font-semibold mb-5">
+        <h1 className="text-3xl md:text-5xl text-center font-bold mb-5">
           Create an account
         </h1>
         <div className="space-y-5">
@@ -130,7 +130,7 @@ const Signup = () => {
           </Link>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 
