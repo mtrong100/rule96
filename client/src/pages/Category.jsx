@@ -100,7 +100,7 @@ const Category = () => {
           Array(itemsPerPage)
             .fill(0)
             .map((item, index) => (
-              <Skeleton key={index} height="268px"></Skeleton>
+              <Skeleton key={index} height="250px"></Skeleton>
             ))}
 
         {!loading &&
@@ -113,16 +113,16 @@ const Category = () => {
               <img
                 src={item?.image || noImage}
                 alt=""
-                className="w-full h-[160px] object-cover rounded-md"
+                className="w-full h-[130px] md:h-[160px] object-cover rounded-md"
               />
-              <h1 className="mt-3 capitalize text-sm lg:text-base">{`${
+              <h1 className="mt-3 capitalize font-semibold text-xs lg:text-base">{`${
                 item?.name
               } (${item?.totalVideos || 0})`}</h1>
             </Card>
           ))}
       </ul>
 
-      <div className="flex justify-center mt-7 gap-2">
+      <div className="flex justify-center my-5 gap-2">
         <Button
           label="Previous"
           icon="pi pi-chevron-left"

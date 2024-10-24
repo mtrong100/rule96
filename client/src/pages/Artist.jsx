@@ -66,14 +66,14 @@ const Artist = () => {
         <Empty text="No artist found" />
       )}
 
-      <ul className="grid grid-cols-2 items-center md:flex md:flex-wrap gap-2 mt-5">
+      <ul className="items-center flex flex-wrap gap-2 my-5">
         {filteredArtists.map((item) => (
           <li key={item?._id}>
             <Chip
               onClick={() => onSelectArtist(item?._id)}
               label={`${item?.name} (${item?.totalVideos || 0})`}
               image={item?.image || noImage}
-              className="hover:bg-zinc-700 cursor-pointer"
+              className="hover:bg-zinc-700 cursor-pointer md:text-base text-xs"
             />
           </li>
         ))}

@@ -80,7 +80,7 @@ const Tag = () => {
 
       {!loading && filteredTags.length === 0 && <Empty text="No tag found" />}
 
-      <ul className="grid grid-cols-2 items-center md:flex md:flex-wrap gap-2 mt-5">
+      <ul className="items-center flex flex-wrap gap-2 my-5">
         {filteredTags.map((item) => (
           <li key={item?._id}>
             <Chip

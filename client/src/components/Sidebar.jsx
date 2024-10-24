@@ -28,7 +28,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Card className="w-[300px] overflow-y-auto sticky top-0 left-0  border-right h-screen p-3 shadow-sm flex-shrink-0  z-10">
+    <Card className="w-[300px] overflow-y-auto sticky top-0 left-0 border-right h-screen shadow-sm flex-shrink-0 z-10">
       <div className="text-center">
         <Logo />
       </div>

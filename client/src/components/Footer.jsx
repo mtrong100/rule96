@@ -8,13 +8,14 @@ const Footer = () => {
       <div className="text-center md:py-5">
         <Logo />
 
-        <p className="my-3 text-sm  md:text-base">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate
-          odio dignissimos aliquid sunt ipsum. <br /> Mollitia rerum non numquam
-          blanditiis, corporis ipsa quibusdam,
+        <p className="my-3 text-xs md:text-base">
+          All models were 18 years of age or older at the time of depiction.
+          Rule96Video has a zero-tolerance policy against illegal pornography.
         </p>
 
-        <span>2024 © Rule96 - All rights reserved</span>
+        <span className="text-xs md:text-base">
+          2024 © Rule96 - All rights reserved
+        </span>
       </div>
     </Card>
   );

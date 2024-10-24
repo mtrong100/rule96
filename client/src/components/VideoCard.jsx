@@ -52,26 +52,26 @@ const VideoCard = ({ video }) => {
           src={video?.video}
           className={`${
             isHovered ? "object-contain" : "object-cover"
-          } rounded-tl-lg rounded-tr-lg h-[150px] md:h-[217px] w-full`}
+          } rounded-tl-lg rounded-tr-lg h-[130px] md:h-[217px] w-full`}
           controls={false}
         />
         {!isHovered && (
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+          <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded ">
             {formatDuration(video?.duration)}
           </div>
         )}
       </div>
 
       <div className="p-4">
-        <h3 className="font-semibold mb-3 line-clamp-1 text-sm md:text-base">
+        <h3 className="font-semibold mb-3 line-clamp-1 text-xs md:text-base">
           {video?.title}
         </h3>
-        <div className="flex justify-between text-sm text-gray-500">
-          <div className="flex items-center gap-2 text-xs md:text-base">
-            <i className="pi pi-eye"></i>
+        <div className="flex justify-between  text-gray-500">
+          <div className="flex items-center gap-2 md:text-base text-xs">
+            <i className="pi pi-eye md:text-base text-xs"></i>
             {video?.totalViews || 0} Views
           </div>
-          <span className="text-xs md:text-base">
+          <span className="md:text-base text-xs">
             {formatDate(video?.createdAt)}
           </span>
         </div>

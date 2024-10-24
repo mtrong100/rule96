@@ -57,7 +57,7 @@ const Header = () => {
                 />
               </div>
             ) : (
-              <div className="flex items-center gap-3 justify-end">
+              <div className="items-center gap-3 justify-end hidden md:flex">
                 <Link to="/sign-in">
                   <Button label="Login" severity="info" />
                 </Link>

@@ -77,12 +77,14 @@ const ResetPassword = () => {
         onSubmit={handleSubmit(handleResetPassword)}
         className="w-full max-w-xl mx-auto"
       >
-        <h1 className="text-4xl font-bold mb-5 text-center">Reset password</h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-5 text-center">
+          Reset password
+        </h1>
 
         <div className="space-y-5">
           <div className="flex flex-col gap-2">
             <label className="capitalize">email</label>
-            <div className="flex items-center justify-between gap-1">
+            <div className="flex items-center justify-between gap-1 md:flex-row flex-col gap-2">
               <InputText
                 {...register("email")}
                 label="Email"
@@ -94,7 +96,7 @@ const ResetPassword = () => {
                 label="Send code"
                 icon="pi pi-send"
                 onClick={handleSendOtp}
-                className="w-[180px] h-[50px]"
+                className="w-full md:w-[180px] h-[50px]"
               />
             </div>
             {errors && (

@@ -12,7 +12,7 @@ const Comment = ({ cmt, onDelete, loading }) => {
         alt={cmt?.user?.username}
         className="w-10 h-10 rounded-full object-cover"
       />
-      <div>
+      <div className="md:text-base text-xs">
         <div className="flex items-center gap-3">
           <h4 className="font-semibold text-white">{cmt?.user?.username}</h4>
           <small>{formatDate(cmt?.createdAt)}</small>

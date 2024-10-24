@@ -119,15 +119,18 @@ const VideoDetail = () => {
     }
   };
 
+  useEffect(() => {
+    fetchVideo();
+  }, [videoId]);
+
+  useEffect(() => {
+    fetchVideos();
+  }, []);
+
   // FIX SCROLL BUG
   useEffect(() => {
     document.body.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  useEffect(() => {
-    fetchVideo();
-    fetchVideos();
-  }, []);
+  }, [videoId]);
 
   useEffect(() => {
     if (currentUser) fetchFavoriteVideo();
@@ -142,24 +145,23 @@ const VideoDetail = () => {
   }
   return (
     <div>
-      <div className="flex flex-row items-center gap-5 mb-5 ">
+      <div className="md:flex hidden flex-row items-center gap-5 mb-5 ">
         <Button
           onClick={() => window.history.back()}
           label="Back"
           icon="pi pi-arrow-left"
         />
-        <div className="text-3xl flex-1 font-semibold hidden md:block">
-          {video?.title}
-        </div>
+        <div className="text-3xl flex-1 font-semibold">{video?.title}</div>
       </div>
 
-      <h1 className="text-xl font-semibold mb-2 md:hidden">{video?.title}</h1>
+      <h1 className="text-lg font-semibold mb-3 md:hidden">{video?.title}</h1>
+
       <video
         poster={video?.thumbnail}
         src={video?.video}
         controls
         autoPlay={false}
-        className="w-full h-[350px] md:h-[670px] object-contain"
+        className="w-full h-[350px] md:h-[670px] object-contain border border-gray-800 rounded-md"
       />
 
       {/* For mobile */}
@@ -174,6 +176,7 @@ const VideoDetail = () => {
             label={`Like (${video?.totalLikes})`}
             severity="secondary"
             onClick={onLikeVideo}
+            size="small"
           />
           <Button
             icon={`pi ${
@@ -184,6 +187,7 @@ const VideoDetail = () => {
             label={`Dislike (${video?.totalDislikes})`}
             severity="secondary"
             onClick={onDislikeVideo}
+            size="small"
           />
           <Button
             icon={`pi ${
@@ -196,22 +200,26 @@ const VideoDetail = () => {
             } `}
             severity="contrast"
             onClick={onToggleFavorite}
+            size="small"
           />
           <Button
             onClick={onReport}
             icon="pi pi-flag"
             label="Report"
             severity="danger"
+            size="small"
           />
           <Button
             onClick={onCopyLink}
             icon="pi pi-share-alt"
             label="Share"
             severity="info"
+            size="small"
           />
         </div>
       </Card>
 
+      {/* For Desktop */}
       <Card className="mt-2 hidden md:block">
         <div className="flex items-center gap-3 justify-between ">
           <div className="flex items-center gap-3">
@@ -268,7 +276,7 @@ const VideoDetail = () => {
       <Card className="mt-2">
         <TabView>
           <TabPanel header="About">
-            <div className="space-y-3">
+            <div className="space-y-3 text-xs md:text-base">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm">
                   <i className="pi pi-calendar"></i>
@@ -307,7 +315,7 @@ const VideoDetail = () => {
                   <Tag
                     key={tag?._id}
                     value={tag?.name}
-                    className="capitalize"
+                    className="capitalize "
                   />
                 ))}
               </div>
@@ -317,7 +325,7 @@ const VideoDetail = () => {
                   <Tag
                     key={cat?._id}
                     value={cat?.name}
-                    className="capitalize"
+                    className="capitalize "
                   />
                 ))}
               </div>
@@ -340,11 +348,13 @@ const VideoDetail = () => {
         </TabView>
       </Card>
 
-      <section className="mt-5 space-y-5">
+      <Divider />
+
+      <section className="space-y-5">
         <h1 className="text-2xl md:text-4xl font-bold capitalize">
           Recommended for you
         </h1>
-        <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2 ">
+        <div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-2">
           {pending &&
             Array(8)
               .fill(0)
@@ -354,7 +364,7 @@ const VideoDetail = () => {
 
           {!pending &&
             filteredVideos
-              .slice(0, 8)
+              .slice(0, 12)
               .map((video) => <VideoCard key={video._id} video={video} />)}
         </div>
       </section>
@@ -437,7 +447,7 @@ function CommentSection({ videoId }) {
         />
         <Button
           label="Submit"
-          className="flex ml-auto"
+          className="md:flex md:ml-auto w-full"
           loading={loading}
           disabled={loading}
           onClick={onCreateComment}

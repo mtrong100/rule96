@@ -75,7 +75,74 @@ const Home = () => {
 
   return (
     <main>
-      <Card>
+      <Card className="md:hidden">
+        <div className="space-y-2">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"></InputIcon>
+            <InputText
+              placeholder="Search title..."
+              className="w-full"
+              value={filter.title}
+              onChange={(e) => setFilter({ ...filter, title: e.target.value })}
+            />
+          </IconField>
+
+          <div className="grid grid-cols-2 gap-2">
+            <Dropdown
+              options={artists}
+              optionLabel="name"
+              optionValue="_id"
+              placeholder="Select your artist..."
+              filter
+              filterPlaceholder="Search your artist..."
+              value={filter.artist}
+              onChange={(e) => setFilter({ ...filter, artist: e.value })}
+              className="w-full"
+            />
+            <Dropdown
+              value={filter.category}
+              onChange={(e) => setFilter({ ...filter, category: e.value })}
+              options={categories}
+              optionLabel="name"
+              optionValue="_id"
+              filter
+              filterPlaceholder="Search a category"
+              placeholder="Select a category"
+              className="w-full"
+            />
+            <Dropdown
+              value={filter.tag}
+              onChange={(e) => setFilter({ ...filter, tag: e.value })}
+              options={tags}
+              optionLabel="name"
+              optionValue="_id"
+              filter
+              filterPlaceholder="Search a tag"
+              placeholder="Select a tag"
+              className="w-full"
+            />
+            <Dropdown
+              value={filter.dateFilter}
+              onChange={(e) => setFilter({ ...filter, dateFilter: e.value })}
+              options={DATE_FILTERS}
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Select timestamp"
+              className="w-full"
+            />
+          </div>
+
+          <Button
+            onClick={clearFilter}
+            label="Clear Filter"
+            icon="pi pi-filter-slash"
+            className="w-full"
+            severity="danger"
+          />
+        </div>
+      </Card>
+
+      <Card className="hidden md:block">
         <div className="flex flex-col md:flex-row items-center justify-between mb-5 gap-3">
           <h1 className="text-2xl md:text-3xl font-semibold capitalize">
             Browse more Videos By Filter
@@ -160,7 +227,7 @@ const Home = () => {
           ))}
       </div>
 
-      <div className="flex justify-center mt-7 gap-2">
+      <div className="flex justify-center my-5 gap-2">
         <Button
           label="Previous"
           icon="pi pi-chevron-left"

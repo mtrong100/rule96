@@ -266,7 +266,7 @@ const Upload = () => {
   }, []);
 
   return (
-    <div>
+    <div className="my-5">
       <form>
         <div className="grid lg:grid-cols-2 gap-10">
           <section className="space-y-5">

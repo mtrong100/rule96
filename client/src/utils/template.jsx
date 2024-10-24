@@ -19,7 +19,7 @@ export const imageTemplate = (rowData) => {
 export const image2Template = (rowData) => {
   return (
     <img
-      src={rowData.image}
+      src={rowData.image || noImage}
       alt="Avatar"
       className="w-12 h-12 rounded-full object-cover"
     />
@@ -109,7 +109,7 @@ export const userCmtTemplate = (rowData) => {
   return (
     <div className="flex items-center gap-3">
       <img
-        src={rowData.user.avatar}
+        src={rowData.user.avatar || noImage}
         alt="Avatar"
         className="w-10 h-10 rounded-full"
       />

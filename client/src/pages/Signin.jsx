@@ -57,7 +57,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="mt-20 mb-44">
+    <div className="mt-32 mb-40">
       <form
         onSubmit={handleSubmit(onLogin)}
         className="w-full max-w-xl mx-auto"
@@ -91,8 +91,8 @@ const Signin = () => {
           loading={isSubmitting}
         />
 
-        <div className="flex items-center justify-between mt-5">
-          <div className="flex items-center">
+        <div className="flex items-center justify-between mt-5 flex-wrap">
+          <div className="flex items-center flex-wrap">
             <p className="text-gray-400">Not have an account?</p>
             <Link to="/sign-up">
               <Button type="button" label="Register" text raised />

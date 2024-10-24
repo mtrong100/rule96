@@ -70,7 +70,7 @@ const Signup = () => {
         onSubmit={handleSubmit(onRegister)}
         className="w-full max-w-xl mx-auto"
       >
-        <h1 className="text-5xl text-center font-semibold mb-5">
+        <h1 className="text-3xl md:text-5xl text-center font-semibold mb-5">
           Create an account
         </h1>
         <div className="space-y-5">
